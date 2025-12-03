@@ -1,0 +1,172 @@
+---
+title: Fungsi sebagai Blok Bangunan Kode
+---
+
+Fungsi adalah salah satu konsep paling fundamental dan kuat dalam pemrograman. Mereka memungkinkan kita untuk membungkus sebuah blok kode, memberinya nama, dan menjalankannya kapan pun kita butuhkan. Ini adalah kunci untuk menulis kode yang terorganisir, efisien, dan dapat digunakan kembali (prinsip DRY - _Don't Repeat Yourself_).
+
+> **Fungsi** adalah blok kode program yang dirancang untuk melakukan tugas tertentu dan dapat dipanggil (dijalankan) berulang kali dari bagian lain dalam program.
+
+---
+
+## 1. Deklarasi, Parameter, dan Nilai Kembali (Return)
+
+### 1.1. Membuat dan Memanggil Fungsi
+
+Fungsi dideklarasikan menggunakan kata kunci `function`, diikuti dengan nama fungsi, sepasang kurung `()`, dan blok kode di dalam kurung kurawal `{}`.
+
+```javascript
+// 1. Membuat (mendeklarasikan) fungsi
+function sayHelloWorld() {
+  console.log("Hello World!");
+}
+
+// 2. Memanggil (menjalankan) fungsi
+sayHelloWorld(); // Output: Hello World!
+sayHelloWorld(); // Bisa dipanggil berkali-kali. Output: Hello World!
+```
+
+### 1.2. Parameter dan Argumen
+
+Fungsi menjadi jauh lebih berguna ketika kita bisa memberikan "input" kepadanya. Input ini disebut **parameter**.
+
+- **Parameter**: Variabel yang ditulis di dalam kurung `()` saat fungsi dideklarasikan.
+- **Argumen**: Nilai nyata yang kita berikan saat fungsi dipanggil.
+
+```javascript
+// 'firstName' dan 'lastName' adalah parameter
+function sayHello(firstName, lastName) {
+  console.log(`Halo, ${firstName} ${lastName}!`);
+}
+
+// "Valerina" dan "Botez" adalah argumen
+sayHello("Valerina", "Botez"); // Output: Halo, Valerina Botez!
+sayHello("Budi", "Nugraha"); // Output: Halo, Budi Nugraha!
+```
+
+### 1.3. Nilai Kembali (Return Value)
+
+Selain melakukan aksi, fungsi juga bisa menghasilkan sebuah "output" atau nilai. Ini dilakukan dengan menggunakan kata kunci `return`.
+
+Ketika pernyataan `return` dieksekusi, eksekusi fungsi segera berhenti, dan nilai yang ditentukan dikirim kembali ke pemanggil.
+
+```javascript
+function sum(value1, value2) {
+  const result = value1 + value2;
+  return result; // Mengembalikan hasil penjumlahan
+}
+
+const total = sum(10, 20);
+console.log(total); // Output: 30
+```
+
+---
+
+## 2. Paradigma Parameter Tingkat Lanjut
+
+JavaScript sangat fleksibel dalam menangani parameter.
+
+### 2.1. Default Parameter
+
+Anda bisa memberikan nilai default pada parameter. Nilai ini akan digunakan jika saat pemanggilan fungsi, argumen untuk parameter tersebut tidak diberikan.
+
+```javascript
+function register(name, gender = "UNKNOWN") {
+  console.log(`Nama: ${name}, Gender: ${gender}`);
+}
+
+register("Eko", "MALE"); // Output: Nama: Eko, Gender: MALE
+register("Budi"); // Output: Nama: Budi, Gender: UNKNOWN
+```
+
+### 2.2. Rest Parameter (`...`)
+
+_Rest parameter_ memungkinkan kita untuk mewakili **sejumlah argumen yang tidak terbatas** sebagai sebuah **array**. Sintaks ini harus menjadi parameter terakhir.
+
+```javascript
+// ...data akan mengumpulkan semua argumen setelah 'name' ke dalam array 'data'
+function sum(name, ...data) {
+  let total = 0;
+  for (const item of data) {
+    total += item;
+  }
+  console.log(`Total ${name} adalah ${total}`);
+}
+
+sum("Jeruk", 2, 3, 4, 6, 7, 8); // Output: Total Jeruk adalah 30
+sum("Apel", 5, 5, 6, 7, 5, 6); // Output: Total Apel adalah 34
+```
+
+### 2.3. Spread Syntax (`...`)
+
+Meskipun menggunakan sintaks yang sama (`...`), _spread syntax_ adalah kebalikan dari _rest parameter_. Ia digunakan saat **memanggil fungsi** untuk "membongkar" atau "menyebarkan" elemen dari sebuah array menjadi argumen-argumen individual.
+
+```javascript
+const values = [10, 10, 10, 10, 10];
+
+// Tanpa spread syntax, ini akan error karena fungsi sum di atas butuh angka, bukan array
+// sum("Test", values);
+
+// Dengan spread syntax, array 'values' dibongkar menjadi: 10, 10, 10, 10, 10
+sum("Test", ...values); // Output: Total Test adalah 50
+```
+
+---
+
+## 3. Anonymous dan Arrow Function
+
+### 3.1. Anonymous Function
+
+Di JavaScript, fungsi adalah _first-class citizen_, artinya ia bisa diperlakukan seperti nilai biasa: disimpan dalam variabel, atau dilewatkan sebagai argumen. Fungsi yang tidak memiliki nama disebut **anonymous function**.
+
+```javascript
+// Fungsi anonim yang disimpan dalam variabel 'say'
+const say = function (name) {
+  console.log(`Hello ${name}`);
+};
+
+say("Andi"); // Output: Hello Andi
+```
+
+### 3.2. Arrow Function (`=>`)
+
+_Arrow function_ adalah sintaks modern (diperkenalkan di ES6) yang lebih ringkas untuk menulis fungsi. Ia sangat populer dan sering digunakan.
+
+**Bentuk Standar:**
+
+```javascript
+const sayHello = (name) => {
+  console.log(`Hello ${name}`);
+};
+sayHello("Budi"); // Output: Hello Budi
+```
+
+**Bentuk Ringkas (jika isi fungsi hanya satu baris):**
+
+Jika fungsi hanya memiliki satu baris kode dan baris itu adalah pernyataan `return`, Anda bisa menuliskannya tanpa kurung kurawal `{}` dan tanpa kata kunci `return`.
+
+```javascript
+// Fungsi tradisional
+function sum(a, b) {
+  return a + b;
+}
+
+// Ditulis ulang dengan arrow function (bentuk ringkas)
+const sumArrow = (a, b) => a + b;
+
+console.log(sumArrow(5, 5)); // Output: 10
+```
+
+!> **Catatan**: _Arrow function_ memiliki beberapa perbedaan teknis penting (terutama terkait kata kunci `this`) yang akan kita bahas di topik yang lebih lanjut. Untuk saat ini, anggap ia sebagai cara penulisan fungsi yang lebih singkat.
+
+---
+
+## Rangkuman Sesi 4
+
+Fungsi adalah konsep inti yang akan Anda gunakan terus-menerus.
+
+- Anda telah belajar cara **mendeklarasikan** fungsi dan **memanggilnya**.
+- Anda bisa memberikan input melalui **parameter** dan menghasilkan output dengan **`return`**.
+- Anda mengenal berbagai jenis parameter: **default**, **rest**, dan **spread syntax**.
+- Anda bisa menulis fungsi dengan cara modern menggunakan **anonymous** dan **arrow function**.
+
+Di sesi berikutnya, kita akan membahas bagaimana cara mengelola struktur data yang lebih kompleks seperti Array dan Object.

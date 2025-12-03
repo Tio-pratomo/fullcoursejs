@@ -1,0 +1,67 @@
+---
+title: Property di Constructor Function
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Materi: Pengetahuan & Konsep
+
+**Property** adalah atribut/data (seperti nama atau umur) yang disimpan di object. Setelah buat object dari constructor, kita bisa tambah manual via dot notation (`obj.property = value`), tapi ini hanya memengaruhi object itu saja – constructor jadi sia-sia.
+
+**Contohnya:**
+
+```js wrap
+// Constructor Function
+function Mobil(merek) {
+  this.merek = merek;
+  this.roda = 4; // Properti umum yang sudah benar di sini
+}
+
+// Membuat instance (objek) baru
+const mobilA = new Mobil('Toyota');
+const mobilB = new Mobil('Honda');
+
+// --- Bagian yang "Sia-sia" atau Tidak Efisien ---
+
+// Jika kita menambahkan properti 'warna' via dot notation setelah objek dibuat:
+mobilA.warna = 'Merah';
+
+// kita harus mengulang proses penambahan properti untuk setiap objek baru.
+// Kita tidak bisa membuat 'warna' sebagai properti wajib saat pembuatan objek.
+
+// Outputnya : Object Tidak konsisten
+console.log(mobilA); // Mobil { merek: 'Toyota', roda: 4, warna: 'Merah' }
+console.log(mobilB); // Mobil { merek: 'Honda', roda: 4, }
+```
+
+<Aside title="Solusi optimal" icon="open-book" type="tip">
+  **wajib** deklarasikan property **di dalam constructor** menggunakan keyword `this` (merujuk
+  instance object saat `new`), sehingga **semua object dari constructor otomatis punya property
+  sama** dengan nilai awal konsisten.
+</Aside>
+
+`this.property = value` di dalam constructor memastikan encapsulation dasar dan reusable blueprint, fondasi untuk model data dinamis di app web modern.
+
+Hasilnya, object keluaran predictable, mudah di-scale untuk ribuan instance tanpa duplikasi kode.
+
+## Praktik
+
+Bangun dari Sesi 2, tambah property via `this`; tes di console:
+
+```javascript
+function Person() {
+  this.nama = 'Unknown'; // Property default untuk semua instance
+  this.umur = 0;
+}
+
+const eka = new Person();
+const budi = new Person();
+
+console.log(eka.nama); // 'Unknown'
+console.log(budi.nama); // 'Unknown' – konsisten!
+eka.nama = 'Eka'; // Override per object OK (property di dalam constructor)
+console.log(eka.nama); // 'Eka'
+console.log(budi.nama); // Masih 'Unknown'
+```
+
+Lihat `eka` dan `budi` di console – property ter-attach otomatis! Sesi depan tambah method.

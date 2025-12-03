@@ -1,0 +1,183 @@
+---
+title: Bekerja dengan Data Menggunakan Operator
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Di sesi sebelumnya, kita telah belajar cara menyimpan data dalam variabel. Sekarang, saatnya kita mempelajari cara **mengolah, memanipulasi, dan membandingkan** data tersebut menggunakan **operator**.
+
+**Operator** adalah simbol khusus yang melakukan operasi pada satu atau lebih nilai (atau variabel) dan menghasilkan sebuah nilai baru.
+
+---
+
+## 1. Operator Aritmatika dan Penugasan
+
+Ini adalah operator yang paling umum dan digunakan untuk melakukan operasi matematika dasar.
+
+### 1.1. Operator Aritmatika
+
+| Operator | Fungsi                 | Contoh            |
+| :------- | :--------------------- | :---------------- |
+| `+`      | Penjumlahan            | `10 + 5` ⟶ `15`   |
+| `-`      | Pengurangan            | `10 - 5` ⟶ `5`    |
+| `*`      | Perkalian              | `10 * 5` ⟶ `50`   |
+| `**`     | Eksponensial (pangkat) | `10 ** 2` ⟶ `100` |
+| `/`      | Pembagian              | `10 / 5` ⟶ `2`    |
+| `%`      | Sisa Bagi (Modulo)     | `10 % 3` ⟶ `1`    |
+
+### 1.2. Operator Augmented Assignments
+
+Ini adalah cara singkat untuk melakukan operasi aritmatika pada variabel itu sendiri.
+
+| Operator | Ekuivalen dengan       |
+| :------- | :--------------------- |
+| `+=`     | `result = result + x`  |
+| `-=`     | `result = result - x`  |
+| `*=`     | `result = result * x`  |
+| `**=`    | `result = result ** x` |
+| `/=`     | `result = result / x`  |
+| `%=`     | `result = result % x`  |
+
+```javascript
+let result = 10;
+result += 5; // sekarang result menjadi 15
+console.log(result);
+```
+
+### 1.3. Operator Unary
+
+Operator ini bekerja pada satu nilai. Yang paling umum adalah `++` (increment) untuk menaikkan nilai sebesar 1, dan `--` (decrement) untuk menurunkannya sebesar 1.
+
+```javascript
+let counter = 5;
+counter++; // counter sekarang menjadi 6
+console.log(counter);
+
+counter--; // counter kembali menjadi 5
+console.log(counter);
+```
+
+---
+
+## 2. Operator Perbandingan dan Logika
+
+Operator ini sangat krusial untuk membuat keputusan dalam kode. Hasil dari operasinya selalu berupa nilai boolean (`true` atau `false`).
+
+### 2.1. Operator Perbandingan
+
+| Operator | Keterangan                                     |
+| :------- | :--------------------------------------------- |
+| `>`      | Lebih dari                                     |
+| `<`      | Kurang dari                                    |
+| `>=`     | Lebih dari atau sama dengan                    |
+| `<=`     | Kurang dari atau sama dengan                   |
+| `==`     | Sama dengan (hanya membandingkan nilai)        |
+| `===`    | Sama dengan dan sama tipe (perbandingan ketat) |
+| `!=`     | Tidak sama dengan                              |
+| `!==`    | Tidak sama dengan atau tidak sama tipe         |
+
+<Aside title="Catatan" icon="open-book">
+
+Selalu Gunakan `===` daripada `==`
+
+Selalu utamakan penggunaan `===` dan `!==` . Karena lebih aman dan ketat. Operator `==` dapat menyebabkan hasil yang tidak terduga karena ia mencoba melakukan konversi tipe data secara otomatis.
+
+</Aside>
+
+Perhatikan perbedaan ini:
+
+```javascript
+console.log(10 == '10'); // Output: true (nilai dianggap sama)
+console.log(10 === '10'); // Output: false (nilai sama, tapi tipe data berbeda!)
+```
+
+### 2.2. Operator Logika
+
+Digunakan untuk menggabungkan beberapa ekspresi boolean.
+
+- **`&&` (DAN)**: Menghasilkan `true` hanya jika **kedua** kondisi bernilai `true`.
+- **`||` (ATAU)**: Menghasilkan `true` jika **salah satu** kondisi bernilai `true`.
+- **`!` (TIDAK/KEBALIKAN)**: Membalikkan nilai boolean (`true` menjadi `false`, dan sebaliknya).
+
+```javascript
+const nilaiUjian = 85;
+const kehadiran = 90;
+
+const lulusUjian = nilaiUjian > 75; // true
+const kehadiranCukup = kehadiran > 80; // true
+
+const berhakLulus = lulusUjian && kehadiranCukup; // true && true
+
+console.log('Berhak lulus: ' + berhakLulus); // Output: Berhak lulus: true
+```
+
+---
+
+## 3. Konversi Tipe Data
+
+Terkadang, kita perlu mengubah tipe data dari satu bentuk ke bentuk lain. Kasus paling umum adalah saat menerima input dari pengguna, yang biasanya selalu dalam bentuk `String`.
+
+```javascript
+const value1 = '10'; // ini adalah string
+const value2 = 5; // ini adalah number
+
+const hasil = value1 + value2;
+console.log(hasil); // Output: "105" (bukan 15!)
+```
+
+Untuk mengatasi ini, kita bisa melakukan konversi (sering disebut _parsing_):
+
+- **`parseInt(string)`**: Mengubah string menjadi bilangan bulat (integer).
+- **`parseFloat(string)`**: Mengubah string menjadi bilangan desimal (pecahan).
+- **`Number(string)`**: Mengubah string menjadi number (bisa bulat atau desimal). Ini lebih ketat; jika ada karakter selain angka (kecuali titik desimal), hasilnya bisa `NaN` (Not a Number).
+
+```javascript
+const value1 = '10.5';
+const value2 = 5;
+
+const hasil = parseInt(value1) + value2; // parseInt akan mengambil bagian bulat saja
+console.log(hasil); // Output: 15 (karena 10 + 5)
+
+const hasilFloat = parseFloat(value1) + value2;
+console.log(hasilFloat); // Output: 15.5 (karena 10.5 + 5)
+```
+
+---
+
+## 4. String Template
+
+Ini adalah cara modern dan lebih mudah untuk membuat string, terutama jika kita perlu memasukkan nilai dari variabel ke dalamnya. Alih-alih menggunakan operator `+` untuk menggabungkan string, kita menggunakan karakter _backtick_ (` `` `) dan sintaks `${...}`.
+
+**Cara Lama (dengan `+`):**
+
+```javascript
+const nama = 'Mamat';
+const nilai = 90;
+const kalimat = 'Halo ' + nama + ', nilai Anda adalah ' + nilai + '.';
+// Output: Halo Mamat, nilai Anda adalah 90.
+```
+
+**Cara Modern (dengan String Template):**
+
+```javascript
+const nama = 'Mamat';
+const nilai = 90;
+const kalimat = `Halo ${nama}, nilai Anda adalah ${nilai}.`;
+// Output: Halo Mamat, nilai Anda adalah 90.
+```
+
+Keunggulan utamanya adalah kode menjadi jauh lebih bersih dan mudah dibaca.
+
+---
+
+## Rangkuman Sesi 2
+
+Di sesi ini, kita telah belajar bagaimana:
+
+- Menggunakan **operator aritmatika** untuk kalkulasi matematis.
+- Menggunakan **operator perbandingan** dan **logika** untuk membuat keputusan.
+- Pentingnya menggunakan `===` untuk perbandingan yang aman.
+- Melakukan **konversi tipe data** dari string ke number.
+- Membuat string secara efisien dengan **String Template**.
+
+Anda sekarang memiliki alat untuk mulai mengolah data. Di sesi berikutnya, kita akan menggunakan alat ini untuk mengontrol alur program!

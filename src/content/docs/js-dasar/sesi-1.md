@@ -1,0 +1,132 @@
+---
+title: Fondasi dan Konsep Dasar
+---
+
+Selamat datang di sesi pertama pembelajaran JavaScript! Di sesi ini, kita akan membangun fondasi yang kokoh dengan memahami konsep-konsep paling dasar yang akan menjadi pijakan untuk semua yang akan kita pelajari nanti.
+
+---
+
+## 1. Pengenalan JavaScript
+
+### 1.1. Apa itu JavaScript?
+
+**JavaScript (JS)** adalah bahasa pemrograman yang awalnya dirancang untuk membuat halaman web menjadi lebih hidup dan interaktif. Diciptakan pada tahun 1995 oleh **Brendan Eich** di Netscape, JavaScript telah berkembang pesat dari sekadar bahasa skrip browser menjadi bahasa yang bisa digunakan di mana saja, termasuk di server (berkat Node.js).
+
+### 1.2. Peran Standarisasi ECMAScript
+
+Untuk memastikan kode JavaScript berjalan konsisten di semua browser, sebuah standar bernama **ECMAScript** dibuat. Anggap saja ECMAScript sebagai "resep" atau "cetak biru" untuk bahasa JavaScript, sementara browser (seperti Chrome, Firefox) membuat "implementasi" dari resep tersebut. Inilah sebabnya mengapa JavaScript modern sering disebut dengan versi ECMAScript-nya, seperti ES6 (ECMAScript 2015).
+
+---
+
+## 2. Variabel: Kotak Penyimpanan Data Anda
+
+### 2.1. Apa Itu Variabel?
+
+Bayangkan Anda memiliki sebuah kotak yang bisa Anda beri label nama. Anda bisa memasukkan apa saja ke dalam kotak itu—sebuah angka, sebaris teks, atau informasi lainnya. Kapan pun Anda membutuhkan isinya, Anda cukup memanggil nama kotak tersebut.
+
+> **Variabel** adalah wadah atau tempat untuk menyimpan data di dalam program.
+
+Dengan variabel, kita bisa menggunakan kembali data tanpa harus menuliskannya berulang kali.
+
+### 2.2. Cara Membuat Variabel: `let` dan `const`
+
+Di JavaScript modern, ada dua kata kunci utama untuk membuat variabel:
+
+- **`let`**: Gunakan `let` saat nilai di dalam variabel mungkin perlu **diubah** di kemudian hari.
+- **`const`**: Gunakan `const` (singkatan dari _constant_) untuk nilai yang Anda tahu **tidak akan pernah berubah**.
+
+**Praktik Terbaik**: Selalu utamakan penggunaan `const` kecuali Anda yakin nilainya perlu diubah. Ini membuat kode Anda lebih aman dan mudah diprediksi.
+
+```javascript
+// Contoh menggunakan let (nilai bisa diubah)
+let umur = 25;
+console.log(umur); // Output: 25
+
+umur = 26; // Sah! Nilainya kita ubah
+console.log(umur); // Output: 26
+
+// Contoh menggunakan const (nilai tidak bisa diubah)
+const namaLengkap = "Budi Santoso";
+console.log(namaLengkap); // Output: Budi Santoso
+
+// Baris di bawah ini akan menyebabkan error jika dijalankan!
+// namaLengkap = "Joko Widodo";
+```
+
+!> **Catatan**: Dulu, ada kata kunci `var`. Namun, penggunaannya **tidak lagi direkomendasikan** karena perilakunya yang bisa menyebabkan bug yang sulit dilacak terkait _scope_ (ruang lingkup). **Selalu gunakan `let` dan `const`**.
+
+---
+
+## 3. Tipe Data Inti
+
+**Tipe data** adalah klasifikasi yang memberi tahu kita jenis nilai apa yang disimpan oleh sebuah variabel. Berikut adalah tiga tipe data primitif yang paling sering digunakan.
+
+### 3.1. `Number`
+
+Tipe data ini digunakan untuk semua jenis angka. Uniknya, di JavaScript tidak ada perbedaan antara bilangan bulat (_integer_) dan bilangan desimal (_floating-point_).
+
+> **JavaScript hanya mendukung satu tipe data `Number`** untuk semua jenis angka.
+
+```javascript
+let nomorUrut = 10; // Ini adalah Number
+let harga = 1500.5; // Ini juga Number
+```
+
+### 3.2. `String`
+
+`String` adalah tipe data untuk merepresentasikan teks. Untuk menandakan sebuah nilai adalah string, kita harus membungkusnya dengan tanda kutip, baik itu kutip satu (`''`) maupun kutip dua (`""`).
+
+```javascript
+let sapaan = "Halo, selamat pagi!";
+let nama = "Andi";
+
+// String bisa digabungkan menggunakan operator +
+let kalimatLengkap = sapaan + " Nama saya " + nama;
+console.log(kalimatLengkap); // Output: Halo, selamat pagi! Nama saya Andi
+```
+
+### 3.3. `Boolean`
+
+`Boolean` adalah tipe data yang paling sederhana dan hanya memiliki dua kemungkinan nilai: **`true`** (benar) atau **`false`** (salah). Tipe data ini sangat fundamental untuk logika kondisional dan struktur kontrol.
+
+```javascript
+let sudahLulus = true;
+let sedangBermain = false;
+```
+
+---
+
+## 4. Nilai Khusus: `undefined` dan `null`
+
+Dua nilai khusus ini seringkali membingungkan bagi pemula, namun keduanya memiliki makna yang sangat berbeda.
+
+### 4.1. `undefined`
+
+`undefined` adalah sebuah tipe data dan juga sebuah nilai. Ini merepresentasikan keadaan sebuah variabel yang **telah dideklarasikan tetapi belum pernah diberi nilai**.
+
+```javascript
+let namaHewan;
+console.log(namaHewan); // Output: undefined
+```
+
+### 4.2. `null`
+
+`null` adalah sebuah nilai yang diberikan secara sengaja untuk merepresentasikan **"tidak ada nilai"** atau **"kosong"**. Berbeda dengan `undefined`, `null` harus ditetapkan secara eksplisit oleh programmer.
+
+```javascript
+let dataPemenang = null; // Kita sengaja set nilainya menjadi null karena belum ada pemenang.
+console.log(dataPemenang); // Output: null
+```
+
+---
+
+## Rangkuman Sesi 1
+
+Selamat! Anda telah mempelajari pilar-pilar dasar JavaScript:
+
+- **JavaScript** adalah bahasa serbaguna untuk interaktivitas web dan lebih.
+- **Variabel** (`let` dan `const`) adalah wadah untuk menyimpan data.
+- **Tipe Data** dasar mencakup `Number`, `String`, dan `Boolean`.
+- **`undefined`** berarti variabel belum diberi nilai, sedangkan **`null`** berarti variabel sengaja diberi nilai kosong.
+
+Dengan fondasi ini, Anda siap untuk melanjutkan ke sesi berikutnya untuk belajar bagaimana cara mengolah data-data ini!

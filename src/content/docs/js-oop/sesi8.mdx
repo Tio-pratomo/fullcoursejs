@@ -1,0 +1,119 @@
+---
+title: Class, Inheritance serta Super
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Materi: Pengetahuan & Konsep
+
+**Class** di JavaScript, yang diperkenalkan pada ES6 (ECMAScript 2015), adalah _syntactical sugar_ (gula sintaksis) di atas **prototypal inheritance** yang sudah ada di JavaScript.
+
+Secara sederhana, _class_ adalah **cetak biru** atau **template** untuk membuat objek (instance) baru. Mereka mengemas data (properti) dan fungsionalitas (metode) yang bekerja pada data tersebut menjadi satu unit yang kohesif.
+
+Ini membantu kita:
+
+1.  **Mengorganisir** kode dengan lebih baik, mengikuti paradigma **Pemrograman Berorientasi Objek (OOP)**.
+2.  Membuat objek yang **berulang** (banyak objek yang memiliki struktur dan perilaku yang sama).
+3.  Menerapkan prinsip **pewarisan** (inheritance) dengan cara yang lebih mudah dipahami, mirip dengan bahasa pemrograman berorientasi objek lainnya seperti Java atau C++.
+
+Berikut ini adalah kata kunci yang digunakan untuk mendefinisikan sebuah kelas.
+
+```javascript
+class NamaClass {
+  // Properti dan Metode berada di sini
+}
+```
+
+Penulisan kode constructor, properti, dan method pada class javascript lihat di bawah ini:
+
+```javascript wrap
+// 1. Deklarasi Class
+class Mobil {
+  // 2. Constructor (Dipanggil saat membuat objek baru)
+  constructor(merek, warna, tahun) {
+    // 3. Properti diinisialisasi
+    this.merek = merek;
+    this.warna = warna;
+    this.tahun = tahun;
+  }
+
+  // 4. Metode (Perilaku)
+  nyalakanMesin() {
+    console.log(`Mobil ${this.merek} berwarna ${this.warna} sedang dinyalakan.`);
+  }
+
+  getInfo() {
+    return `${this.merek} (${this.tahun}) - Warna: ${this.warna}`;
+  }
+}
+
+// Membuat Objek (Instance) dari Class Mobil
+const mobilSaya = new Mobil('Toyota', 'Hitam', 2023);
+const mobilLain = new Mobil('Honda', 'Merah', 2020);
+
+// Menggunakan Properti dan Metode Objek
+console.log(mobilSaya.getInfo()); // Output: Toyota (2023) - Warna: Hitam
+mobilLain.nyalakanMesin(); // Output: Mobil Honda berwarna Merah sedang dinyalakan.
+```
+
+Secara definisi, constructor, property, dan method di class, sama saja dengan yang ada di constructor function. Sekali lagi, ini hanyalah **_syntactical sugar_** yang memudahkan kita.
+
+---
+
+**Class Inheritance** di ES6 menggunakan keyword `extends` untuk membuat pewarisan antar class secara clean dan readable, menggantikan manual prototype chain. Class child otomatis inherit semua method & property dari parent, dan bisa override method untuk polymorphism.
+
+Pattern ini jadi standard di framework modern seperti NestJS.
+
+Keyword `super` memiliki dua fungsi kunci:
+
+1. **Super Constructor**: `super()` di child constructor **wajib** dipanggil untuk execute parent constructor dan initialize inherited properties; ini menggantikan `Parent.call(this)` di era pre-ES6.
+2. **Super Method**: `super.methodName()` memanggil implementasi parent, berguna saat child override tapi butuh reuse logic dasar – mirip `super.sayHello()` di override method.
+
+<Aside title="Catatan penting" type="tip" icon="open-book">
+  Jika child punya constructor, `super()` harus dipanggil sebelum `this` digunakan. JS akan throw
+  error jika tidak ada keyword `super` di constructor child.
+</Aside>
+
+## Praktik
+
+Buat parent-child class dengan `extends`, `super()`, dan method override:
+
+```javascript
+// Parent class
+class Employee {
+  constructor(firstName) {
+    this.firstName = firstName;
+  }
+
+  sayHello(name) {
+    console.log(`Hello ${name}, my name is employee ${this.firstName}`);
+  }
+}
+
+// Child class dengan inheritance
+class Manager extends Employee {
+  constructor(firstName, lastName) {
+    super(firstName); // wajib panggil super constructor
+    this.lastName = lastName;
+  }
+
+  // Override method tapi panggil parent via super
+  sayHello(name) {
+    super.sayHello(name); // panggil method parent
+    console.log(`And I am a manager`);
+  }
+}
+
+const eli = new Employee('Eli');
+const budi = new Manager('Budi', 'Nugraha');
+
+eli.sayHello('Joko'); // Output: Hello Joko, my name is employee Eli
+budi.sayHello('Joko'); // Output: Hello Joko, my name is employee Budi
+//         And I am a manager
+
+console.log(budi instanceof Employee); // true (inheritance terdeteksi)
+```
+
+**Coba hapus `super(firstName)`** ⟶ akan error!.
+
+Dengan ini, kita punya OOP modern yang clean.

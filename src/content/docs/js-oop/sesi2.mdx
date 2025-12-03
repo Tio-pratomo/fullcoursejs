@@ -1,0 +1,41 @@
+---
+title: Membuat Constructor Function
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Materi: Pengetahuan & Konsep
+
+**Constructor Function** adalah cara klasik (pre-ES6) untuk membuat "class" di JavaScript dengan memanfaatkan function biasa sebagai cetakan object, karena JS berbasis prototype bukan class murni sejak awal.
+
+Berbeda dengan object literal `{}` yang menghasilkan object unik setiap kali, constructor memungkinkan produksi massal object serupa via keyword `new`, yang secara otomatis menginisialisasi prototype chain untuk inheritance efisien.
+
+<Aside type="tip" title="Best practice" icon="open-book">
+  Insialisasi nama constructor dengan huruf kapital (PascalCase) agar mudah dikenali sebagai
+  "pseudo-class", bukan function biasa. contohnya `Person`, `Car`, atau `Employee`
+</Aside>
+
+Konvensi ini masih relevan dalam pemrograman modern. Saat `new` digunakan, JavaScript menjalankan fungsi sebagai constructor yang tugasnya: membuat objek kosong, menghubungkan this ke objek tersebut, lalu mengembalikannya secara otomatis (kecuali kita me-return objek lain secara manual).
+
+Pendekatan ini fondasi OOP JS. Meski ES6 class lebih clean, constructor tetap powerful untuk memahami prototype di balik layar aplikasi web skala besar.
+
+## Praktik
+
+Jalankan di console browser atau Node.js untuk lihat perbedaan:
+
+```javascript
+// Object literal: unik, deklarasi manual
+const person1 = {};
+const person2 = {};
+
+// Constructor Function: cetakan reusable
+function Person() {
+  // this otomatis merujuk object baru
+}
+const eka = new Person();
+const budi = new Person();
+
+console.log(eka); // Person {}
+console.log(budi); // Person {}
+console.log(eka === budi); // false: object berbeda tapi dari cetakan sama
+```

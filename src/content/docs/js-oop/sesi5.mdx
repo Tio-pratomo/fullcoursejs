@@ -1,0 +1,54 @@
+---
+title: Constructor Inheritance
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Materi: Pengetahuan & Konsep
+
+**Constructor Inheritance** memungkinkan reuse property & behavior dari constructor lain tanpa duplikasi kode, menggunakan method `.call()` untuk "copy" execution context (`this`) ke constructor child – teknisnya bukan murni inheritance tapi **property copying**, essential untuk pre-ES6 pattern sebelum `extends` keyword ada.
+
+Saat child constructor panggil parent `.call(this, parameters)`, JS execute parent constructor dengan `this` merujuk ke new instance child, auto-populate inherited properties.
+
+Pattern ini fondasi Dependency Injection & mixin composition di JavaScript lama, dan masih relevan dipahami untuk maintain legacy codebase atau memahami prototype chain di balik layar.
+
+<Aside title="Catatan" icon="open-book">
+  Hanya copy properties & method di instance, bukan prototype chain (Sesi 7 bahas prototype
+  inheritance proper).
+</Aside>
+
+## Praktik
+
+Sekarang, kita setup parent & child constructor, test `.call()` di console:
+
+```javascript
+// Parent constructor
+function Employee(firstName) {
+  this.firstName = firstName;
+}
+
+// Child constructor
+function Manager(firstName, lastName) {
+  // Copy parent property via .call(this, ...)
+  Employee.call(this, firstName);
+
+  // Add child-specific property
+  this.lastName = lastName;
+}
+
+const erika = new Employee('erika');
+const budi = new Manager('Budi', 'Nugraha');
+
+console.log(erika); // Employee { firstName: 'erika' }
+console.log(budi); // Manager { firstName: 'Budi', lastName: 'Nugraha' }
+console.log(erika.firstName); // 'erika'
+console.log(budi.firstName); // 'Budi' – inherited via .call()!
+```
+
+<Aside title="Kunci" icon="open-book">
+  `.call(this, ...)` bind parent constructor ke `this` child instance.
+</Aside>
+
+<Aside title="Penting" icon="open-book" type="tip">
+  ini transfer instance property only – belum setup **prototype chain**.
+</Aside>
