@@ -20,8 +20,9 @@ max_line_length = 100
 indent_size = 2
 
 # Setting khusus untuk file Markdown
-[*.md]
+[*.{md,mdx}]
 trim_trailing_whitespace = false
+max_line_length = 100
 
 # Setting khusus untuk file YAML
 [*.{yml,yaml}]

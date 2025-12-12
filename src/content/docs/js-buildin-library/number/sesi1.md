@@ -4,17 +4,29 @@ title: Number
 
 ## Materi: Number & tipe angka
 
-`Number` adalah tipe data angka standar di JavaScript yang memakai format floating‑point 64‑bit (IEEE 754), sama kelasnya dengan `double` di bahasa seperti Java atau C#. Artinya satu tipe ini dipakai untuk bilangan bulat dan pecahan, misalnya `42`, `3.14`, atau `-0.5`.
+`Number` adalah tipe data angka standar di JavaScript yang memakai format floating‑point 64‑bit (IEEE 754), sama kelasnya dengan `double` di bahasa seperti Java atau C#.
 
-JavaScript tidak punya tipe integer terpisah seperti `int` di banyak bahasa lain; semua “angka biasa” menggunakan `Number`. Bilangan bulat hanya aman direpresentasikan tanpa kehilangan presisi pada rentang sekitar $-2^{53} - 1$ sampai $2^{53} - 1$, yang diekspos lewat `Number.MIN_SAFE_INTEGER` dan `Number.MAX_SAFE_INTEGER`.
+Artinya satu tipe ini dipakai untuk bilangan bulat dan pecahan, misalnya `42`, `3.14`, atau `-0.5`.
 
-Selain `Number`, JavaScript punya tipe `BigInt` untuk bilangan bulat yang sangat besar, tapi ini bukan pengganti `Number` untuk kebutuhan umum sehari‑hari. Pada sesi ini fokus tetap ke `Number` karena semua API web dan mayoritas library modern mengasumsikan tipe ini.
+JavaScript tidak punya tipe integer terpisah seperti `int` di banyak bahasa lain; semua “angka biasa” menggunakan `Number`.
 
-Angka bisa ditulis dalam beberapa bentuk literal: desimal biasa (`123`), biner (`0b1111011`), heksadesimal (`0x7B`), dan oktal (`0o173`), dan semuanya direpresentasikan kembali sebagai `Number`. Secara internal, angka ini dipecah menjadi sign, exponent, dan mantissa; kombinasi ketiganya membatasi rentang dan presisi sehingga operasi desimal bisa kelihatan “aneh” (misalnya hasil tidak persis karena pembulatan biner).
+Bilangan bulat hanya aman direpresentasikan tanpa kehilangan presisi pada rentang sekitar $-2^{53} - 1$ sampai $2^{53} - 1$, yang diekspos lewat `Number.MIN_SAFE_INTEGER` dan `Number.MAX_SAFE_INTEGER`.
 
-Objek global `Number` menyediakan konstruktor dan fungsi konversi: memanggil `Number(value)` _tanpa_ `new` akan mencoba mengubah `value` menjadi angka primitif. Jika string atau nilai lain tidak bisa dikonversi, hasilnya adalah `NaN` (Not‑a‑Number), sebuah nilai khusus yang menandakan kegagalan operasi numerik.
+Selain `Number`, JavaScript punya tipe `BigInt` untuk bilangan bulat yang sangat besar, tapi ini bukan pengganti `Number` untuk kebutuhan umum sehari‑hari.
 
-JavaScript juga memiliki nilai khusus `Infinity` dan `-Infinity` untuk mewakili hasil overflow atau pembagian dengan nol dalam konteks tertentu. Nilai‑nilai ini tetap bertipe `Number`, sehingga bisa muncul di operasi matematika seperti angka lainnya, meski punya perilaku khusus di beberapa kasus.
+Pada sesi ini fokus tetap ke `Number` karena semua API web dan mayoritas library modern mengasumsikan tipe ini.
+
+Angka bisa ditulis dalam beberapa bentuk literal: desimal biasa (`123`), biner (`0b1111011`), heksadesimal (`0x7B`), dan oktal (`0o173`), dan semuanya direpresentasikan kembali sebagai `Number`.
+
+Secara internal, angka ini dipecah menjadi sign, exponent, dan mantissa; kombinasi ketiganya membatasi rentang dan presisi sehingga operasi desimal bisa kelihatan “aneh” (misalnya hasil tidak persis karena pembulatan biner).
+
+Objek global `Number` menyediakan konstruktor dan fungsi konversi: memanggil `Number(value)` _tanpa_ `new` akan mencoba mengubah `value` menjadi angka primitif.
+
+Jika string atau nilai lain tidak bisa dikonversi, hasilnya adalah `NaN` (Not‑a‑Number), sebuah nilai khusus yang menandakan kegagalan operasi numerik.
+
+JavaScript juga memiliki nilai khusus `Infinity` dan `-Infinity` untuk mewakili hasil overflow atau pembagian dengan nol dalam konteks tertentu.
+
+Nilai‑nilai ini tetap bertipe `Number`, sehingga bisa muncul di operasi matematika seperti angka lainnya, meski punya perilaku khusus di beberapa kasus.
 
 Banyak operasi built‑in akan melakukan “coercion” ke `Number`:
 
@@ -22,7 +34,9 @@ Banyak operasi built‑in akan melakukan “coercion” ke `Number`:
 - `null` → `0`, sementara `undefined` → `NaN`.
 - String angka seperti `"123"` atau `"3.14"` biasanya dikonversi ke angka, sedangkan string non‑angka seperti `"abc"` menghasilkan `NaN`.
 
-Coercion yang sama terjadi saat memakai unary plus (`+value`) atau fungsi `Number(value)`, sehingga dua cara ini sering dipakai untuk mengubah input user menjadi angka. Untuk pemula, memahami pola konversi dasar ini penting sebelum menyentuh detail seperti static properties atau metode format angka.
+Coercion yang sama terjadi saat memakai unary plus (`+value`) atau fungsi `Number(value)`, sehingga dua cara ini sering dipakai untuk mengubah input user menjadi angka.
+
+Untuk pemula, memahami pola konversi dasar ini penting sebelum menyentuh detail seperti static properties atau metode format angka.
 
 ## Praktik: Eksperimen singkat Number
 

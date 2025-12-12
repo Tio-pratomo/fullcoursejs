@@ -2,7 +2,7 @@
 title: Mini Projects dengan Fetch + Async/Await
 ---
 
-Sesi 7 ini adalah sesi terakhir: kita pakai semua konsep async/await + Promise + Fetch API untuk membangun **3 mini project**: Chuck Norris Joke App, Weather App, dan Pokedex simplifikasi.
+Sesi ini adalah sesi terakhir: kita pakai semua konsep async/await + Promise + Fetch API untuk membangun **3 mini project**: Chuck Norris Joke App, Weather App, dan Pokedex simplifikasi.
 
 ## Chuck Norris Joke App
 

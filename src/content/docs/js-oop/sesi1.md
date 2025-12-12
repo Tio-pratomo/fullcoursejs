@@ -8,7 +8,9 @@ title: Pengenalan OOP dan Dasar Object-Class
 
 Di JavaScript, OOP populer karena mendukung pengembangan aplikasi web cutting-edge seperti SPA (Single Page Application) dengan framework React atau Vue.
 
-**Object** adalah instance data nyata yang menyimpan _properties_ (atribut/field seperti nama atau umur) dan _methods_ (fungsi/behavior seperti berjalan atau makan), mirip entitas dunia nyata. **Class** berfungsi sebagai blueprint atau cetakan untuk menghasilkan banyak object dengan struktur sama; satu class bisa spawn object tak terbatas, memastikan konsistensi data.
+**Object** adalah instance data nyata yang menyimpan _properties_ (atribut/field seperti nama atau umur) dan _methods_ (fungsi/behavior seperti berjalan atau makan), mirip entitas dunia nyata.
+
+**Class** berfungsi sebagai blueprint atau cetakan untuk menghasilkan banyak object dengan struktur sama; satu class bisa spawn object tak terbatas, memastikan konsistensi data.
 
 ![GambarClassCar](./images/Sesi1Gambar1.webp)
 
