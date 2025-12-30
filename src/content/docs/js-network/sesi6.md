@@ -26,6 +26,8 @@ Upload form via fetch secara konsep hampir sama dengan POST JSON di sesi 3; beda
 
 Pola UI‑nya: sebelum kirim set state “mengupload…” dan disable tombol, setelah `fetch` resolve dan status OK ubah ke “sudah terupload”, dan kalau error tampilkan pesan error + re‑enable tombol.
 
+Gunakan https://beeceptor.com/ untuk menguji pengiriman form. Buat endpoint dengan nama bebas, lalu gunakan sebagai tujuan kirim data. Pantau hasil pengiriman langsung di situs tersebut.
+
 **Contoh HTML minimal:**
 
 ```html
@@ -47,25 +49,35 @@ const statusEl = document.getElementById('upload-status');
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
 
-  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitBtn = document.querySelector("button[type='submit']");
   submitBtn.disabled = true;
   statusEl.textContent = 'Mengupload...';
 
   try {
     const formData = new FormData(form);
 
-    const response = await fetch('https://httpbin.org/post', {
+    const response = await fetch('https://mytest.free.beeceptor.com', {
       method: 'POST',
       body: formData,
+      headers: {
+        Accept: 'application/json',
+      },
     });
 
+    const ct = response.headers.get('content-type') || '';
+    const raw = await response.text();
+
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(`HTTP ${response.status} - ${raw.slice(0, 200)}`);
     }
 
-    // Banyak API balas JSON dengan info status
-    await response.json();
-    statusEl.textContent = 'Upload berhasil.';
+    let data = null;
+    if (ct.includes('application/json')) {
+      data = JSON.parse(raw);
+    }
+
+    statusEl.textContent = 'Berhasil upload';
+    console.log('parsed:', data);
   } catch (error) {
     console.error(error);
     statusEl.textContent = 'Upload gagal. Periksa koneksi atau ukuran file.';
@@ -75,7 +87,7 @@ form.addEventListener('submit', async (event) => {
 });
 ```
 
-Kode ini sudah memenuhi UX dasar: user melihat “Mengupload…”, tahu kapan “Upload berhasil” atau “Upload gagal”, dan tombol tidak bisa di‑spam saat proses jalan.
+Kode ini sudah memenuhi UX dasar: user melihat “Mengupload…”, tahu kapan “Berhasil upload” atau “Upload gagal”, dan tombol tidak bisa di‑spam saat proses jalan.
 
 ---
 

@@ -2,6 +2,8 @@
 title: Struktur Data dan Iterasi Modern
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 Sejauh ini kita telah bekerja dengan tipe data primitif seperti `Number` dan `String`. Namun, dalam aplikasi nyata, kita sering kali perlu mengelola **kumpulan data**. Di sinilah struktur data berperan. Sesi ini akan fokus pada dua struktur data paling penting di JavaScript: **Array** dan **Object**.
 
 ---
@@ -18,7 +20,7 @@ Array dibuat menggunakan kurung siku `[]`. Setiap item di dalamnya dipisahkan ol
 
 ```javascript
 // Membuat array
-let namaBuah = ["Apel", "Jeruk", "Mangga"];
+let namaBuah = ['Apel', 'Jeruk', 'Mangga'];
 
 // Mengakses data menggunakan index
 console.log(namaBuah[0]); // Output: "Apel"
@@ -38,15 +40,15 @@ JavaScript menyediakan banyak cara untuk memanipulasi array.
 ```javascript
 const names = []; // Membuat array kosong
 
-names.push("Eko");
-names.push("Kurniawan", "Khannedy"); // Bisa menambah lebih dari satu
+names.push('Robert');
+names.push('Davis', 'Chaniago'); // Bisa menambah lebih dari satu
 
 console.table(names); // console.table() menampilkan array dalam bentuk tabel yang rapi
 
 console.log(`Panjang array: ${names.length}`); // Output: Panjang array: 3
 
 // Mengubah data
-names[0] = "Budi";
+names[0] = 'Budi';
 console.table(names); // Index 0 sekarang berisi "Budi"
 
 // Menghapus data
@@ -68,20 +70,20 @@ Object dibuat menggunakan kurung kurawal `{}`.
 
 ```javascript
 const orang = {
-  nama: "Eko Kurniawan",
-  alamat: "Indonesia",
+  nama: 'Waliudin',
+  alamat: 'Indonesia',
   umur: 30,
 };
 
 // Mengakses properti (ada 2 cara)
 // 1. Dot Notation (lebih umum digunakan)
-console.log(`Nama: ${orang.nama}`); // Output: Nama: Eko Kurniawan
+console.log(`Nama: ${orang.nama}`); // Output: Nama: Waliudin
 
 // 2. Bracket Notation
-console.log(`Alamat: ${orang["alamat"]}`); // Output: Alamat: Indonesia
+console.log(`Alamat: ${orang['alamat']}`); // Output: Alamat: Indonesia
 
 // Menambah properti baru
-orang.pekerjaan = "Programmer";
+orang.pekerjaan = 'Programmer';
 
 // Menghapus properti
 delete orang.umur;
@@ -100,15 +102,15 @@ Selain loop `for` biasa, JavaScript menyediakan cara yang lebih modern dan mudah
 Perulangan ini digunakan untuk melakukan iterasi pada **nilai (value)** dari sebuah data _iterable_ (seperti Array dan String). Ini adalah cara yang direkomendasikan untuk mengulang setiap item dalam sebuah array.
 
 ```javascript
-const names = ["Eko", "Kurniawan", "Khannedy"];
+const names = ['Robert', 'Davis', 'Chaniago'];
 
 for (const name of names) {
   console.log(name);
 }
 /* Output:
-Eko
-Kurniawan
-Khannedy
+Robert
+Davis
+Chaniago
 */
 ```
 
@@ -118,31 +120,35 @@ Perulangan ini digunakan untuk melakukan iterasi pada **properti (key)** dari se
 
 ```javascript
 const person = {
-  firstName: "Eko",
-  lastName: "Khannedy",
+  firstName: 'Siva',
+  lastName: 'Aprilia',
 };
 
 for (const property in person) {
   console.log(`Property: ${property}, Value: ${person[property]}`);
 }
 /* Output:
-Property: firstName, Value: Eko
-Property: lastName, Value: Khannedy
+Property: firstName, Value: Siva
+Property: lastName, Value: Aprilia
 */
 ```
 
-> **Peringatan**: Jangan gunakan `for...in` untuk melakukan iterasi pada Array, karena ia tidak dirancang untuk itu dan dapat menyebabkan perilaku yang tidak terduga.
+<Aside title="Peringatan" type="caution">
+
+Jangan gunakan `for...in` untuk melakukan iterasi pada Array, karena ia tidak dirancang untuk itu dan dapat menyebabkan perilaku yang tidak terduga.
+
+</Aside>
 
 ---
 
 ## 4. Destructuring: Membongkar Nilai dengan Elegan
 
-> **Destructuring** adalah fitur yang memungkinkan kita untuk "membongkar" nilai-nilai dari array atau properti dari object ke dalam variabel-variabel terpisah. Ini membuat kode jauh lebih ringkas.
+**Destructuring** adalah fitur yang memungkinkan kita untuk "membongkar" nilai-nilai dari array atau properti dari object ke dalam variabel-variabel terpisah. Ini membuat kode jauh lebih ringkas.
 
 ### 4.1. Destructuring Array
 
 ```javascript
-const names = ["Adnan", "Fuadi", "Beyhaqi"];
+const names = ['Adnan', 'Fuadi', 'Beyhaqi'];
 
 // Cara lama
 // const name1 = names[0];
@@ -161,10 +167,10 @@ Untuk object, nama variabel harus sama dengan nama `key` di dalam object.
 
 ```javascript
 const person = {
-  firstName: "Eko",
-  lastName: "Khannedy",
+  firstName: 'Adnan',
+  lastName: 'Fuadi',
   address: {
-    city: "Jakarta",
+    city: 'Jakarta',
   },
 };
 
@@ -175,8 +181,8 @@ const person = {
 // Cara baru dengan destructuring
 const { firstName, lastName } = person;
 
-console.log(firstName); // Output: Eko
-console.log(lastName); // Output: Khannedy
+console.log(firstName); // Output: Adnan
+console.log(lastName); // Output: Fuadi
 ```
 
 ---

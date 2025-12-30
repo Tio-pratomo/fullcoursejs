@@ -2,7 +2,9 @@
 title: Mengontrol Alur Eksekusi Program
 ---
 
-Sejauh ini, kode yang kita tulis berjalan lurus dari atas ke bawah. Namun, kekuatan sesungguhnya dari pemrograman adalah kemampuannya untuk **membuat keputusan** dan **mengulangi tugas**. Di sesi ini, kita akan belajar cara mengontrol alur eksekusi program menggunakan struktur kontrol.
+Sejauh ini, kode yang kita tulis berjalan lurus dari atas ke bawah. Namun, kekuatan sesungguhnya dari pemrograman adalah kemampuannya untuk **membuat keputusan** dan **mengulangi tugas**.
+
+Di sesi ini, kita akan belajar cara mengontrol alur eksekusi program menggunakan struktur kontrol.
 
 ---
 
@@ -22,11 +24,11 @@ Ini adalah struktur percabangan yang paling umum. Logikanya sederhana:
 const nilaiUjian = 75;
 
 if (nilaiUjian > 80) {
-  console.log("Luar biasa! Nilai Anda A.");
+  console.log('Luar biasa! Nilai Anda A.');
 } else if (nilaiUjian > 70) {
-  console.log("Bagus! Nilai Anda B.");
+  console.log('Bagus! Nilai Anda B.');
 } else {
-  console.log("Coba lagi ya. Nilai Anda C.");
+  console.log('Coba lagi ya. Nilai Anda C.');
 }
 
 // Output: Bagus! Nilai Anda B.
@@ -37,22 +39,22 @@ if (nilaiUjian > 80) {
 `switch` menyediakan alternatif yang lebih bersih untuk serangkaian `if-else if` yang panjang, khususnya ketika Anda membandingkan satu variabel dengan banyak kemungkinan nilai.
 
 ```javascript
-const nilaiHuruf = "A";
+const nilaiHuruf = 'A';
 let ucapan;
 
 switch (nilaiHuruf) {
-  case "A":
-    ucapan = "Wow, Anda lulus dengan sangat baik!";
+  case 'A':
+    ucapan = 'Wow, Anda lulus dengan sangat baik!';
     break; // 'break' penting untuk menghentikan pengecekan
-  case "B":
-  case "C":
-    ucapan = "Anda lulus, selamat!";
+  case 'B':
+  case 'C':
+    ucapan = 'Anda lulus, selamat!';
     break;
-  case "D":
-    ucapan = "Anda tidak lulus.";
+  case 'D':
+    ucapan = 'Anda tidak lulus.';
     break;
   default:
-    ucapan = "Mungkin Anda salah jurusan?";
+    ucapan = 'Mungkin Anda salah jurusan?';
 }
 
 console.log(ucapan);
@@ -83,12 +85,12 @@ Ada enam nilai _falsy_ di JavaScript. Anda wajib mengingatnya!
 Contohnya, string `"hello"`, angka `123`, array `[]`, dan objek `{}` semuanya adalah nilai _truthy_.
 
 ```javascript
-let data = ""; // Ini adalah nilai falsy (string kosong)
+let data = ''; // Ini adalah nilai falsy (string kosong)
 
 if (data) {
-  console.log("TRUE");
+  console.log('TRUE');
 } else {
-  console.log("FALSE");
+  console.log('FALSE');
 }
 
 // Output: FALSE

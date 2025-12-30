@@ -2,7 +2,11 @@
 title: Fungsi sebagai Blok Bangunan Kode
 ---
 
-Fungsi adalah salah satu konsep paling fundamental dan kuat dalam pemrograman. Mereka memungkinkan kita untuk membungkus sebuah blok kode, memberinya nama, dan menjalankannya kapan pun kita butuhkan. Ini adalah kunci untuk menulis kode yang terorganisir, efisien, dan dapat digunakan kembali (prinsip DRY - _Don't Repeat Yourself_).
+import { Aside } from '@astrojs/starlight/components';
+
+Fungsi adalah salah satu konsep paling fundamental dan kuat dalam pemrograman. Mereka memungkinkan kita untuk membungkus sebuah blok kode, memberinya nama, dan menjalankannya kapan pun kita butuhkan.
+
+Ini adalah kunci untuk menulis kode yang terorganisir, efisien, dan dapat digunakan kembali (prinsip DRY - _Don't Repeat Yourself_).
 
 > **Fungsi** adalah blok kode program yang dirancang untuk melakukan tugas tertentu dan dapat dipanggil (dijalankan) berulang kali dari bagian lain dalam program.
 
@@ -17,7 +21,7 @@ Fungsi dideklarasikan menggunakan kata kunci `function`, diikuti dengan nama fun
 ```javascript
 // 1. Membuat (mendeklarasikan) fungsi
 function sayHelloWorld() {
-  console.log("Hello World!");
+  console.log('Hello World!');
 }
 
 // 2. Memanggil (menjalankan) fungsi
@@ -39,8 +43,8 @@ function sayHello(firstName, lastName) {
 }
 
 // "Valerina" dan "Botez" adalah argumen
-sayHello("Valerina", "Botez"); // Output: Halo, Valerina Botez!
-sayHello("Budi", "Nugraha"); // Output: Halo, Budi Nugraha!
+sayHello('Valerina', 'Botez'); // Output: Halo, Valerina Botez!
+sayHello('Budi', 'Nugraha'); // Output: Halo, Budi Nugraha!
 ```
 
 ### 1.3. Nilai Kembali (Return Value)
@@ -70,17 +74,17 @@ JavaScript sangat fleksibel dalam menangani parameter.
 Anda bisa memberikan nilai default pada parameter. Nilai ini akan digunakan jika saat pemanggilan fungsi, argumen untuk parameter tersebut tidak diberikan.
 
 ```javascript
-function register(name, gender = "UNKNOWN") {
+function register(name, gender = 'UNKNOWN') {
   console.log(`Nama: ${name}, Gender: ${gender}`);
 }
 
-register("Eko", "MALE"); // Output: Nama: Eko, Gender: MALE
-register("Budi"); // Output: Nama: Budi, Gender: UNKNOWN
+register('Enjan', 'MALE'); // Output: Nama: Enjan, Gender: MALE
+register('Warni'); // Output: Nama: Warni, Gender: UNKNOWN
 ```
 
 ### 2.2. Rest Parameter (`...`)
 
-_Rest parameter_ memungkinkan kita untuk mewakili **sejumlah argumen yang tidak terbatas** sebagai sebuah **array**. Sintaks ini harus menjadi parameter terakhir.
+**_Rest parameter_** memungkinkan kita untuk mewakili **sejumlah argumen yang tidak terbatas** sebagai sebuah **array**. Sintaks ini harus menjadi parameter terakhir.
 
 ```javascript
 // ...data akan mengumpulkan semua argumen setelah 'name' ke dalam array 'data'
@@ -92,8 +96,8 @@ function sum(name, ...data) {
   console.log(`Total ${name} adalah ${total}`);
 }
 
-sum("Jeruk", 2, 3, 4, 6, 7, 8); // Output: Total Jeruk adalah 30
-sum("Apel", 5, 5, 6, 7, 5, 6); // Output: Total Apel adalah 34
+sum('Jeruk', 2, 3, 4, 6, 7, 8); // Output: Total Jeruk adalah 30
+sum('Apel', 5, 5, 6, 7, 5, 6); // Output: Total Apel adalah 34
 ```
 
 ### 2.3. Spread Syntax (`...`)
@@ -107,7 +111,7 @@ const values = [10, 10, 10, 10, 10];
 // sum("Test", values);
 
 // Dengan spread syntax, array 'values' dibongkar menjadi: 10, 10, 10, 10, 10
-sum("Test", ...values); // Output: Total Test adalah 50
+sum('Test', ...values); // Output: Total Test adalah 50
 ```
 
 ---
@@ -124,7 +128,7 @@ const say = function (name) {
   console.log(`Hello ${name}`);
 };
 
-say("Andi"); // Output: Hello Andi
+say('Andi'); // Output: Hello Andi
 ```
 
 ### 3.2. Arrow Function (`=>`)
@@ -137,7 +141,7 @@ _Arrow function_ adalah sintaks modern (diperkenalkan di ES6) yang lebih ringkas
 const sayHello = (name) => {
   console.log(`Hello ${name}`);
 };
-sayHello("Budi"); // Output: Hello Budi
+sayHello('Budi'); // Output: Hello Budi
 ```
 
 **Bentuk Ringkas (jika isi fungsi hanya satu baris):**
@@ -156,7 +160,11 @@ const sumArrow = (a, b) => a + b;
 console.log(sumArrow(5, 5)); // Output: 10
 ```
 
-!> **Catatan**: _Arrow function_ memiliki beberapa perbedaan teknis penting (terutama terkait kata kunci `this`) yang akan kita bahas di topik yang lebih lanjut. Untuk saat ini, anggap ia sebagai cara penulisan fungsi yang lebih singkat.
+<Aside title="Catatan" type="tip" icon="open-book">
+
+**_Arrow function_** memiliki beberapa perbedaan teknis penting (terutama terkait kata kunci `this`). Untuk saat ini, anggap **_Arrow function_** sebagai cara penulisan fungsi yang lebih singkat.
+
+</Aside>
 
 ---
 
