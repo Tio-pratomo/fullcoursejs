@@ -8,13 +8,19 @@ Fungsi adalah salah satu konsep paling fundamental dan kuat dalam pemrograman. M
 
 Ini adalah kunci untuk menulis kode yang terorganisir, efisien, dan dapat digunakan kembali (prinsip DRY - _Don't Repeat Yourself_).
 
-> **Fungsi** adalah blok kode program yang dirancang untuk melakukan tugas tertentu dan dapat dipanggil (dijalankan) berulang kali dari bagian lain dalam program.
+<Aside type="tip" title="Definisi" icon="open-book">
+
+**Fungsi** adalah blok kode program yang dirancang untuk melakukan tugas tertentu dan dapat dipanggil (dijalankan) berulang kali dari bagian lain dalam program.
+
+</Aside>
 
 ---
 
-## 1. Deklarasi, Parameter, dan Nilai Kembali (Return)
+## Materi: Pengetahuan & Konsep
 
-### 1.1. Membuat dan Memanggil Fungsi
+### 1. Deklarasi, Parameter, dan Nilai Kembali
+
+#### 1.1. Membuat dan Memanggil Fungsi
 
 Fungsi dideklarasikan menggunakan kata kunci `function`, diikuti dengan nama fungsi, sepasang kurung `()`, dan blok kode di dalam kurung kurawal `{}`.
 
@@ -29,12 +35,35 @@ sayHelloWorld(); // Output: Hello World!
 sayHelloWorld(); // Bisa dipanggil berkali-kali. Output: Hello World!
 ```
 
-### 1.2. Parameter dan Argumen
+**Mengapa Fungsi Penting?**
+
+```javascript
+// Tanpa fungsi - repetitif dan sulit maintain
+console.log('=== SELAMAT DATANG ===');
+console.log('Terima kasih sudah mengunjungi website kami');
+console.log('======================');
+
+console.log('=== SELAMAT DATANG ===');
+console.log('Terima kasih sudah mengunjungi website kami');
+console.log('======================');
+
+// Dengan fungsi - reusable dan mudah maintain
+function tampilkanSambutan() {
+  console.log('=== SELAMAT DATANG ===');
+  console.log('Terima kasih sudah mengunjungi website kami');
+  console.log('======================');
+}
+
+tampilkanSambutan();
+tampilkanSambutan();
+```
+
+#### 1.2. Parameter dan Argumen
 
 Fungsi menjadi jauh lebih berguna ketika kita bisa memberikan "input" kepadanya. Input ini disebut **parameter**.
 
-- **Parameter**: Variabel yang ditulis di dalam kurung `()` saat fungsi dideklarasikan.
-- **Argumen**: Nilai nyata yang kita berikan saat fungsi dipanggil.
+- **Parameter**: Variabel yang ditulis di dalam kurung `()` saat fungsi dideklarasikan
+- **Argumen**: Nilai nyata yang kita berikan saat fungsi dipanggil
 
 ```javascript
 // 'firstName' dan 'lastName' adalah parameter
@@ -47,7 +76,19 @@ sayHello('Valerina', 'Botez'); // Output: Halo, Valerina Botez!
 sayHello('Budi', 'Nugraha'); // Output: Halo, Budi Nugraha!
 ```
 
-### 1.3. Nilai Kembali (Return Value)
+**Multiple Parameters:**
+
+```javascript
+function hitungLuasPersegiPanjang(panjang, lebar) {
+  const luas = panjang * lebar;
+  console.log(`Luas persegi panjang: ${luas} cm²`);
+}
+
+hitungLuasPersegiPanjang(10, 5); // Output: Luas persegi panjang: 50 cm²
+hitungLuasPersegiPanjang(20, 8); // Output: Luas persegi panjang: 160 cm²
+```
+
+#### 1.3. Nilai Kembali (Return Value)
 
 Selain melakukan aksi, fungsi juga bisa menghasilkan sebuah "output" atau nilai. Ini dilakukan dengan menggunakan kata kunci `return`.
 
@@ -61,15 +102,241 @@ function sum(value1, value2) {
 
 const total = sum(10, 20);
 console.log(total); // Output: 30
+
+// Bisa langsung digunakan dalam ekspresi
+console.log(sum(5, 5) * 2); // Output: 20
+```
+
+**Return Menghentikan Eksekusi:**
+
+```javascript
+function cekNilai(nilai) {
+  if (nilai < 60) {
+    return 'Tidak Lulus'; // Fungsi berhenti di sini
+  }
+
+  return 'Lulus'; // Hanya dieksekusi jika nilai >= 60
+
+  console.log('Ini tidak akan pernah dijalankan'); // Dead code
+}
+
+console.log(cekNilai(50)); // "Tidak Lulus"
+console.log(cekNilai(80)); // "Lulus"
+```
+
+**Fungsi Tanpa Return:**
+
+```javascript
+function logMessage(message) {
+  console.log(message);
+  // Tidak ada return statement
+}
+
+const result = logMessage('Hello');
+console.log(result); // undefined
 ```
 
 ---
 
-## 2. Paradigma Parameter Tingkat Lanjut
+### 2. Function Declaration vs Function Expression
+
+JavaScript memiliki beberapa cara untuk membuat fungsi.
+
+#### 2.1. Function Declaration
+
+Function declaration adalah cara standar yang sudah kita lihat.
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('Andi')); // "Hello, Andi!"
+```
+
+**Karakteristik:**
+
+- Menggunakan kata kunci `function`
+- Harus memiliki nama
+- Di-hoist ke atas scope (bisa dipanggil sebelum dideklarasi)
+
+```javascript
+// Ini BISA karena function declaration di-hoist
+console.log(tambah(5, 3)); // 8
+
+function tambah(a, b) {
+  return a + b;
+}
+```
+
+#### 2.2. Function Expression
+
+Function expression adalah fungsi yang disimpan dalam variabel.
+
+```javascript
+// Anonymous function expression
+const greet = function (name) {
+  return `Hello, ${name}!`;
+};
+
+console.log(greet('Budi')); // "Hello, Budi!"
+```
+
+**Karakteristik:**
+
+- Fungsi disimpan dalam variabel
+- Bisa anonymous (tanpa nama) atau named
+- TIDAK di-hoist - harus dideklarasi sebelum dipanggil
+
+```javascript
+// Ini TIDAK BISA - akan error
+console.log(kali(5, 3)); // ReferenceError
+
+const kali = function (a, b) {
+  return a * b;
+};
+```
+
+**Named Function Expression:**
+
+```javascript
+const faktorial = function fakt(n) {
+  if (n <= 1) return 1;
+  return n * fakt(n - 1); // Bisa memanggil dirinya sendiri dengan nama
+};
+
+console.log(faktorial(5)); // 120
+```
+
+#### 2.3. Kapan Menggunakan Yang Mana?
+
+| Function Declaration  | Function Expression                                      |
+| :-------------------- | :------------------------------------------------------- |
+| Butuh hoisting        | Ingin kontrol lebih terhadap kapan fungsi bisa dipanggil |
+| Function di-level top | Conditional function creation                            |
+| Lebih tradisional     | Assignment ke variabel atau property                     |
+
+```javascript
+// Conditional function creation - hanya bisa dengan expression
+let greet;
+
+if (new Date().getHours() < 12) {
+  greet = function () {
+    return 'Good Morning!';
+  };
+} else {
+  greet = function () {
+    return 'Good Afternoon!';
+  };
+}
+
+console.log(greet());
+```
+
+---
+
+### 3. Arrow Function: Sintaks Modern
+
+Arrow function adalah sintaks modern (diperkenalkan di ES6) yang lebih ringkas untuk menulis fungsi.
+
+#### 3.1. Sintaks Dasar
+
+```javascript
+// Function expression tradisional
+const sayHello = function (name) {
+  console.log(`Hello ${name}`);
+};
+
+// Arrow function
+const sayHelloArrow = (name) => {
+  console.log(`Hello ${name}`);
+};
+
+sayHelloArrow('Budi'); // Output: Hello Budi
+```
+
+#### 3.2. Bentuk Ringkas
+
+Jika fungsi hanya memiliki satu baris kode dan baris itu adalah pernyataan `return`, Anda bisa menuliskannya tanpa kurung kurawal `{}` dan tanpa kata kunci `return`.
+
+```javascript
+// Fungsi tradisional
+function sum(a, b) {
+  return a + b;
+}
+
+// Arrow function (bentuk ringkas)
+const sumArrow = (a, b) => a + b;
+
+console.log(sumArrow(5, 5)); // Output: 10
+```
+
+**Variasi Sintaks Arrow Function:**
+
+```javascript
+// 1. Tanpa parameter
+const greet = () => console.log('Hello!');
+greet(); // "Hello!"
+
+// 2. Satu parameter (kurung bisa dihilangkan)
+const double = (num) => num * 2;
+console.log(double(5)); // 10
+
+// 3. Multiple parameters (kurung wajib)
+const add = (a, b) => a + b;
+console.log(add(3, 7)); // 10
+
+// 4. Return object literal (harus dibungkus kurung)
+const createUser = (name, age) => ({ name: name, age: age });
+console.log(createUser('Andi', 25)); // { name: 'Andi', age: 25 }
+
+// 5. Multi-line (kurung kurawal wajib, return eksplisit)
+const processData = (data) => {
+  const cleaned = data.trim();
+  const uppercased = cleaned.toUpperCase();
+  return uppercased;
+};
+console.log(processData('  hello  ')); // "HELLO"
+```
+
+#### 3.3. Arrow Function vs Regular Function
+
+**Perbedaan Utama:**
+
+| Regular Function         | Arrow Function                    |
+| :----------------------- | :-------------------------------- |
+| Punya `this` sendiri     | Tidak punya `this` (lexical this) |
+| Punya `arguments` object | Tidak punya `arguments`           |
+| Bisa jadi constructor    | Tidak bisa jadi constructor       |
+| Lebih verbose            | Lebih ringkas                     |
+
+```javascript
+// this dalam regular function
+const person1 = {
+  name: 'Andi',
+  greet: function () {
+    console.log(`Hi, I'm ${this.name}`);
+  },
+};
+person1.greet(); // "Hi, I'm Andi"
+
+// this dalam arrow function (akan dipelajari lebih dalam di Sesi 6)
+const person2 = {
+  name: 'Budi',
+  greet: () => {
+    console.log(`Hi, I'm ${this.name}`); // this tidak mengacu ke person2!
+  },
+};
+person2.greet(); // "Hi, I'm undefined"
+```
+
+---
+
+### 4. Parameter Tingkat Lanjut
 
 JavaScript sangat fleksibel dalam menangani parameter.
 
-### 2.1. Default Parameter
+#### 4.1. Default Parameter
 
 Anda bisa memberikan nilai default pada parameter. Nilai ini akan digunakan jika saat pemanggilan fungsi, argumen untuk parameter tersebut tidak diberikan.
 
@@ -82,9 +349,41 @@ register('Enjan', 'MALE'); // Output: Nama: Enjan, Gender: MALE
 register('Warni'); // Output: Nama: Warni, Gender: UNKNOWN
 ```
 
-### 2.2. Rest Parameter (`...`)
+**Multiple Default Parameters:**
 
-**_Rest parameter_** memungkinkan kita untuk mewakili **sejumlah argumen yang tidak terbatas** sebagai sebuah **array**. Sintaks ini harus menjadi parameter terakhir.
+```javascript
+function buatProfil(nama, umur = 0, kota = 'Jakarta') {
+  return {
+    nama: nama,
+    umur: umur,
+    kota: kota,
+  };
+}
+
+console.log(buatProfil('Andi'));
+// { nama: 'Andi', umur: 0, kota: 'Jakarta' }
+
+console.log(buatProfil('Budi', 25));
+// { nama: 'Budi', umur: 25, kota: 'Jakarta' }
+
+console.log(buatProfil('Citra', 30, 'Bandung'));
+// { nama: 'Citra', umur: 30, kota: 'Bandung' }
+```
+
+**Default Parameter dengan Ekspresi:**
+
+```javascript
+function hitungTotal(harga, pajak = harga * 0.1) {
+  return harga + pajak;
+}
+
+console.log(hitungTotal(100)); // 110 (pajak otomatis 10)
+console.log(hitungTotal(100, 5)); // 105 (pajak manual 5)
+```
+
+#### 4.2. Rest Parameter (...)
+
+**Rest parameter** memungkinkan kita untuk mewakili **sejumlah argumen yang tidak terbatas** sebagai sebuah **array**. Sintaks ini harus menjadi parameter terakhir.
 
 ```javascript
 // ...data akan mengumpulkan semua argumen setelah 'name' ke dalam array 'data'
@@ -93,88 +392,557 @@ function sum(name, ...data) {
   for (const item of data) {
     total += item;
   }
+
   console.log(`Total ${name} adalah ${total}`);
 }
 
 sum('Jeruk', 2, 3, 4, 6, 7, 8); // Output: Total Jeruk adalah 30
 sum('Apel', 5, 5, 6, 7, 5, 6); // Output: Total Apel adalah 34
+sum('Mangga', 10); // Output: Total Mangga adalah 10
 ```
 
-### 2.3. Spread Syntax (`...`)
+**Rest Parameter adalah Array:**
+
+```javascript
+function tampilkanInfo(nama, ...hobi) {
+  console.log(`Nama: ${nama}`);
+  console.log(`Jumlah hobi: ${hobi.length}`);
+  console.log('Daftar hobi:');
+  hobi.forEach((h, index) => {
+    console.log(`${index + 1}. ${h}`);
+  });
+}
+
+tampilkanInfo('Andi', 'Membaca', 'Coding', 'Gaming');
+/* Output:
+Nama: Andi
+Jumlah hobi: 3
+Daftar hobi:
+1. Membaca
+2. Coding
+3. Gaming
+*/
+```
+
+#### 4.3. Spread Syntax (...)
 
 Meskipun menggunakan sintaks yang sama (`...`), _spread syntax_ adalah kebalikan dari _rest parameter_. Ia digunakan saat **memanggil fungsi** untuk "membongkar" atau "menyebarkan" elemen dari sebuah array menjadi argumen-argumen individual.
 
 ```javascript
 const values = [10, 10, 10, 10, 10];
 
-// Tanpa spread syntax, ini akan error karena fungsi sum di atas butuh angka, bukan array
-// sum("Test", values);
+function sum(name, ...data) {
+  let total = 0;
+  for (const item of data) {
+    total += item;
+  }
+  console.log(`Total ${name} adalah ${total}`);
+}
 
 // Dengan spread syntax, array 'values' dibongkar menjadi: 10, 10, 10, 10, 10
 sum('Test', ...values); // Output: Total Test adalah 50
 ```
 
+**Perbedaan Rest vs Spread:**
+
+```javascript
+// REST - mengumpulkan argumen jadi array
+function collectArgs(...args) {
+  console.log(args); // args adalah array
+}
+collectArgs(1, 2, 3); // [1, 2, 3]
+
+// SPREAD - membongkar array jadi argumen terpisah
+const numbers = [1, 2, 3];
+function showThree(a, b, c) {
+  console.log(a, b, c);
+}
+showThree(...numbers); // 1 2 3
+```
+
+**Spread untuk Copy dan Merge:**
+
+```javascript
+// Copy array
+const arr1 = [1, 2, 3];
+const arr2 = [...arr1]; // Copy
+arr2.push(4);
+console.log(arr1); // [1, 2, 3]
+console.log(arr2); // [1, 2, 3, 4]
+
+// Merge arrays
+const buah = ['Apel', 'Jeruk'];
+const sayur = ['Wortel', 'Bayam'];
+const semua = [...buah, ...sayur];
+console.log(semua); // ['Apel', 'Jeruk', 'Wortel', 'Bayam']
+
+// Copy object
+const user = { name: 'Andi', age: 25 };
+const userCopy = { ...user, city: 'Jakarta' };
+console.log(userCopy); // { name: 'Andi', age: 25, city: 'Jakarta' }
+```
+
 ---
 
-## 3. Anonymous dan Arrow Function
+### 5. Higher-Order Functions
 
-### 3.1. Anonymous Function
+**Higher-order function** adalah fungsi yang melakukan salah satu atau kedua hal berikut:
 
-Di JavaScript, fungsi adalah _first-class citizen_, artinya ia bisa diperlakukan seperti nilai biasa: disimpan dalam variabel, atau dilewatkan sebagai argumen. Fungsi yang tidak memiliki nama disebut **anonymous function**.
+1. Menerima fungsi lain sebagai parameter
+2. Mengembalikan fungsi sebagai nilai return
+
+#### 5.1. Fungsi sebagai Parameter (Callback)
 
 ```javascript
-// Fungsi anonim yang disimpan dalam variabel 'say'
-const say = function (name) {
-  console.log(`Hello ${name}`);
-};
+// Fungsi yang menerima fungsi lain sebagai parameter
+function prosesAngka(angka, callback) {
+  console.log(`Memproses angka: ${angka}`);
+  const hasil = callback(angka);
+  console.log(`Hasil: ${hasil}`);
+  return hasil;
+}
 
-say('Andi'); // Output: Hello Andi
+// Callback functions
+function kaliDua(n) {
+  return n * 2;
+}
+
+function kuadrat(n) {
+  return n * n;
+}
+
+prosesAngka(5, kaliDua); // Memproses angka: 5, Hasil: 10
+prosesAngka(5, kuadrat); // Memproses angka: 5, Hasil: 25
+
+// Dengan arrow function sebagai callback
+prosesAngka(5, (n) => n + 10); // Memproses angka: 5, Hasil: 15
 ```
 
-### 3.2. Arrow Function (`=>`)
-
-_Arrow function_ adalah sintaks modern (diperkenalkan di ES6) yang lebih ringkas untuk menulis fungsi. Ia sangat populer dan sering digunakan.
-
-**Bentuk Standar:**
+**Contoh Praktis - Array Methods:**
 
 ```javascript
-const sayHello = (name) => {
-  console.log(`Hello ${name}`);
-};
-sayHello('Budi'); // Output: Hello Budi
+const numbers = [1, 2, 3, 4, 5];
+
+// map, filter, reduce adalah higher-order functions
+// (akan dipelajari detail di Sesi 5)
+const doubled = numbers.map((n) => n * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+
+const evens = numbers.filter((n) => n % 2 === 0);
+console.log(evens); // [2, 4]
 ```
 
-**Bentuk Ringkas (jika isi fungsi hanya satu baris):**
-
-Jika fungsi hanya memiliki satu baris kode dan baris itu adalah pernyataan `return`, Anda bisa menuliskannya tanpa kurung kurawal `{}` dan tanpa kata kunci `return`.
+#### 5.2. Fungsi yang Mengembalikan Fungsi
 
 ```javascript
-// Fungsi tradisional
-function sum(a, b) {
+// Function factory
+function buatPengali(pengali) {
+  return function (angka) {
+    return angka * pengali;
+  };
+}
+
+const kaliDua = buatPengali(2);
+const kaliTiga = buatPengali(3);
+
+console.log(kaliDua(5)); // 10
+console.log(kaliTiga(5)); // 15
+
+// Dengan arrow function
+const buatPenjumlah = (nilai) => (angka) => angka + nilai;
+
+const tambahLima = buatPenjumlah(5);
+const tambahSepuluh = buatPenjumlah(10);
+
+console.log(tambahLima(3)); // 8
+console.log(tambahSepuluh(3)); // 13
+```
+
+**Contoh Praktis - Partial Application:**
+
+```javascript
+function sapa(salam) {
+  return function (nama) {
+    return `${salam}, ${nama}!`;
+  };
+}
+
+const sapaIndonesia = sapa('Halo');
+const sapaInggris = sapa('Hello');
+
+console.log(sapaIndonesia('Andi')); // "Halo, Andi!"
+console.log(sapaInggris('Budi')); // "Hello, Budi!"
+```
+
+---
+
+### 6. Pure Functions
+
+**Pure function** adalah fungsi yang memenuhi dua kriteria:
+
+1. Selalu menghasilkan output yang sama untuk input yang sama (deterministic)
+2. Tidak memiliki side effects (tidak mengubah state di luar fungsi)
+
+#### 6.1. Karakteristik Pure Function
+
+**Pure Function - BAIK:**
+
+```javascript
+// Pure: selalu return hasil yang sama untuk input yang sama
+function tambah(a, b) {
   return a + b;
 }
 
-// Ditulis ulang dengan arrow function (bentuk ringkas)
-const sumArrow = (a, b) => a + b;
+console.log(tambah(2, 3)); // 5
+console.log(tambah(2, 3)); // 5 (selalu sama)
 
-console.log(sumArrow(5, 5)); // Output: 10
+// Pure: tidak mengubah input
+function gandakanArray(arr) {
+  return arr.map((x) => x * 2); // Return array baru
+}
+
+const nums = [1, 2, 3];
+const doubled = gandakanArray(nums);
+console.log(nums); // [1, 2, 3] (tidak berubah)
+console.log(doubled); // [2, 4, 6]
 ```
 
-<Aside title="Catatan" type="tip" icon="open-book">
+**Impure Function - HINDARI:**
 
-**_Arrow function_** memiliki beberapa perbedaan teknis penting (terutama terkait kata kunci `this`). Untuk saat ini, anggap **_Arrow function_** sebagai cara penulisan fungsi yang lebih singkat.
+```javascript
+let total = 0;
 
-</Aside>
+// Impure: mengubah variabel di luar fungsi (side effect)
+function tambahKeTotal(nilai) {
+  total += nilai; // Mengubah state global
+  return total;
+}
+
+console.log(tambahKeTotal(5)); // 5
+console.log(tambahKeTotal(5)); // 10 (hasil berbeda untuk input sama!)
+
+// Impure: mengubah input
+function gandakanArrayImpure(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] *= 2; // Mengubah array asli
+  }
+  return arr;
+}
+
+const nums2 = [1, 2, 3];
+gandakanArrayImpure(nums2);
+console.log(nums2); // [2, 4, 6] (array asli berubah!)
+```
+
+#### 6.2. Keuntungan Pure Functions
+
+```javascript
+// 1. Mudah di-test
+function hitungDiskon(harga, persen) {
+  return harga - (harga * persen) / 100;
+}
+
+// Test selalu konsisten
+console.log(hitungDiskon(100, 10)); // 90
+console.log(hitungDiskon(100, 10)); // 90
+
+// 2. Mudah di-debug (no hidden dependencies)
+// 3. Bisa di-cache (memoization)
+// 4. Bisa dijalankan parallel tanpa worry tentang race conditions
+```
+
+#### 6.3. Mengubah Impure Jadi Pure
+
+**Sebelum (Impure):**
+
+```javascript
+let cart = [];
+
+function tambahKeKeranjang(item) {
+  cart.push(item); // Mengubah state global
+  return cart;
+}
+```
+
+**Sesudah (Pure):**
+
+```javascript
+function tambahKeKeranjang(cart, item) {
+  return [...cart, item]; // Return array baru
+}
+
+let cart = [];
+cart = tambahKeKeranjang(cart, 'Buku');
+cart = tambahKeKeranjang(cart, 'Pensil');
+console.log(cart); // ['Buku', 'Pensil']
+```
+
+---
+
+### 7. Scope dalam Fungsi
+
+**Scope** menentukan di mana variabel dapat diakses.
+
+#### 7.1. Function Scope
+
+Variabel yang dideklarasikan dalam fungsi hanya bisa diakses dalam fungsi tersebut.
+
+```javascript
+function hitungLuas() {
+  const panjang = 10; // Local variable
+  const lebar = 5; // Local variable
+  return panjang * lebar;
+}
+
+console.log(hitungLuas()); // 50
+// console.log(panjang); // ReferenceError: panjang is not defined
+```
+
+#### 7.2. Block Scope (let & const)
+
+`let` dan `const` memiliki block scope (terbatas pada `{}`).
+
+```javascript
+function testScope() {
+  if (true) {
+    let blockVar = 'Saya block scoped';
+    const blockConst = 'Saya juga block scoped';
+    console.log(blockVar); // Bisa diakses di sini
+  }
+
+  // console.log(blockVar); // Error: blockVar tidak bisa diakses
+}
+
+testScope();
+```
+
+#### 7.3. Lexical Scope
+
+JavaScript menggunakan lexical (static) scope - fungsi inner bisa mengakses variabel dari fungsi outer.
+
+```javascript
+function outer() {
+  const outerVar = 'Saya dari outer';
+
+  function inner() {
+    console.log(outerVar); // Bisa akses variabel dari outer
+  }
+
+  inner();
+}
+
+outer(); // "Saya dari outer"
+```
+
+---
+
+## Praktik
+
+### Latihan 1: Fungsi Dasar
+
+**Tingkat**: Dasar
+
+**Tujuan**: Membuat fungsi dengan parameter dan return value
+
+**Instruksi**:
+Buat fungsi `hitungRataRata` yang menerima 3 angka dan mengembalikan rata-ratanya. Test dengan beberapa nilai berbeda.
+
+### Latihan 2: Default Parameters
+
+**Tingkat**: Dasar
+
+**Tujuan**: Menggunakan default parameters
+
+**Instruksi**:
+Buat fungsi `buatPesan` dengan parameter:
+
+- `nama` (wajib)
+- `salam` (default: "Halo")
+- `bahasa` (default: "ID")
+
+Fungsi return pesan sesuai bahasa. Test dengan berbagai kombinasi argument.
+
+### Latihan 3: Rest dan Spread
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menguasai rest parameter dan spread syntax
+
+**Instruksi**:
+
+1. Buat fungsi `cariMaksimal` yang menerima unlimited arguments dan return nilai terbesar
+2. Buat fungsi `gabungkanArray` yang menerima multiple arrays dan return hasil gabungannya
+
+### Latihan 4: Arrow Function
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menulis arrow function dengan berbagai sintaks
+
+**Instruksi**:
+Konversi fungsi-fungsi berikut ke arrow function dengan sintaks paling ringkas:
+
+```javascript
+function tambah(a, b) {
+  return a + b;
+}
+
+function sapa(nama) {
+  return `Halo, ${nama}!`;
+}
+
+function kuadrat(n) {
+  return n * n;
+}
+```
+
+### Latihan 5: Higher-Order Function
+
+**Tingkat**: Menengah
+
+**Tujuan**: Membuat dan menggunakan higher-order function
+
+**Instruksi**:
+Buat fungsi `ulangAksi` yang menerima:
+
+- `jumlah`: berapa kali mengulang
+- `aksi`: fungsi callback yang akan diulang
+
+Contoh: `ulangAksi(3, () => console.log('Hello'))` akan print "Hello" 3 kali.
+
+### Latihan 6: Pure Function
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menulis pure functions
+
+**Instruksi**:
+Refactor fungsi impure berikut menjadi pure:
+
+```javascript
+let count = 0;
+
+function increment() {
+  count++;
+  return count;
+}
+
+function updateUser(user) {
+  user.lastLogin = new Date();
+  return user;
+}
+```
+
+### Tantangan: Kalkulator dengan Higher-Order Functions
+
+**Tingkat**: Lanjutan
+
+**Tujuan**: Menggabungkan semua konsep fungsi
+
+**Instruksi**:
+Buat sistem kalkulator dengan:
+
+1. Fungsi `buatOperasi` yang return fungsi untuk operasi matematika:
+
+```javascript
+const tambah = buatOperasi('+');
+const kurang = buatOperasi('-');
+const kali = buatOperasi('*');
+const bagi = buatOperasi('/');
+```
+
+2. Fungsi `hitung` yang menerima operator function dan unlimited numbers:
+
+```javascript
+hitung(tambah, 1, 2, 3, 4); // 10
+hitung(kali, 2, 3, 4); // 24
+```
+
+3. Fungsi `rantai` yang bisa chain operations:
+
+```javascript
+rantai(5).tambah(3).kali(2).kurang(4).hasil(); // 12 (5+3=8, 8*2=16, 16-4=12)
+```
+
+Semua fungsi harus pure!
+
+---
+
+## Solusi dan Pembahasan
+
+### Solusi Latihan 6: Pure Function
+
+```javascript
+// Pure version - tidak mengubah state di luar
+function increment(count) {
+  return count + 1;
+}
+
+let myCount = 0;
+myCount = increment(myCount); // 1
+myCount = increment(myCount); // 2
+console.log(myCount); // 2
+
+// Pure version - tidak mengubah object asli
+function updateUser(user) {
+  return {
+    ...user,
+    lastLogin: new Date(),
+  };
+}
+
+const user1 = { name: 'Andi', email: 'andi@email.com' };
+const user2 = updateUser(user1);
+
+console.log(user1.lastLogin); // undefined (tidak berubah)
+console.log(user2.lastLogin); // Date object (user baru)
+```
+
+### Solusi Tantangan (Partial):
+
+```javascript
+// 1. Factory function untuk operasi
+function buatOperasi(operator) {
+  switch (operator) {
+    case '+':
+      return (a, b) => a + b;
+    case '-':
+      return (a, b) => a - b;
+    case '*':
+      return (a, b) => a * b;
+    case '/':
+      return (a, b) => a / b;
+    default:
+      throw new Error('Operator tidak valid');
+  }
+}
+
+const tambah = buatOperasi('+');
+const kali = buatOperasi('*');
+
+// 2. Higher-order function dengan rest parameter
+function hitung(operatorFunc, ...numbers) {
+  if (numbers.length === 0) return 0;
+  if (numbers.length === 1) return numbers[0];
+
+  return numbers.reduce((acc, num) => operatorFunc(acc, num));
+}
+
+console.log(hitung(tambah, 1, 2, 3, 4)); // 10
+console.log(hitung(kali, 2, 3, 4)); // 24
+```
 
 ---
 
 ## Rangkuman Sesi 4
 
-Fungsi adalah konsep inti yang akan Anda gunakan terus-menerus.
+Selamat! Anda telah menguasai konsep fungsi di JavaScript:
 
-- Anda telah belajar cara **mendeklarasikan** fungsi dan **memanggilnya**.
-- Anda bisa memberikan input melalui **parameter** dan menghasilkan output dengan **`return`**.
-- Anda mengenal berbagai jenis parameter: **default**, **rest**, dan **spread syntax**.
-- Anda bisa menulis fungsi dengan cara modern menggunakan **anonymous** dan **arrow function**.
+- **Function declaration dan expression** - memahami perbedaan dan kapan menggunakannya
+- **Arrow function** - sintaks modern yang lebih ringkas
+- **Parameter lanjutan** - default, rest, dan spread
+- **Higher-order functions** - fungsi yang menerima atau return fungsi
+- **Pure functions** - fungsi tanpa side effects untuk kode yang lebih maintainable
+- **Scope** - memahami di mana variabel bisa diakses
 
-Di sesi berikutnya, kita akan membahas bagaimana cara mengelola struktur data yang lebih kompleks seperti Array dan Object.
+Di sesi berikutnya, kita akan belajar tentang **struktur data** seperti Array dan Object, serta metode-metode modern untuk memanipulasinya!

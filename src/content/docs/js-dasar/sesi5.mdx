@@ -8,13 +8,15 @@ Sejauh ini kita telah bekerja dengan tipe data primitif seperti `Number` dan `St
 
 ---
 
-## 1. Tipe Data Array
+## Materi: Pengetahuan & Konsep
+
+### 1. Tipe Data Array
 
 > **Array** adalah tipe data yang digunakan untuk menyimpan kumpulan data dalam satu variabel. Data di dalam array disusun secara **berurutan**.
 
 Bayangkan Array sebagai sebuah rak buku dengan slot bernomor. Anda bisa menaruh buku (data) di setiap slot.
 
-### 1.1. Membuat dan Mengakses Array
+#### 1.1. Membuat dan Mengakses Array
 
 Array dibuat menggunakan kurung siku `[]`. Setiap item di dalamnya dipisahkan oleh koma. Urutan item di dalam array disebut **index**, dan **selalu dimulai dari 0**.
 
@@ -26,45 +28,478 @@ let namaBuah = ['Apel', 'Jeruk', 'Mangga'];
 console.log(namaBuah[0]); // Output: "Apel"
 console.log(namaBuah[1]); // Output: "Jeruk"
 console.log(namaBuah[2]); // Output: "Mangga"
+
+// Index negatif tidak didukung (berbeda dengan Python)
+console.log(namaBuah[-1]); // undefined
+
+// Mengakses index yang tidak ada
+console.log(namaBuah[10]); // undefined
 ```
 
-### 1.2. Operasi Umum pada Array
+**Array dengan Tipe Data Berbeda:**
+
+```javascript
+// Array bisa berisi berbagai tipe data
+const mixedArray = [
+  'String',
+  42,
+  true,
+  null,
+  { name: 'Object' },
+  [1, 2, 3],
+  function () {
+    return 'Function';
+  },
+];
+
+console.log(mixedArray[0]); // "String"
+console.log(mixedArray[4].name); // "Object"
+console.log(mixedArray[6]()); // "Function"
+```
+
+#### 1.2. Operasi Dasar pada Array
 
 JavaScript menyediakan banyak cara untuk memanipulasi array.
 
-- **`array.push(value)`**: Menambah data baru ke **akhir** array.
-- **`array.length`**: Melihat jumlah total data di dalam array.
-- **`array[index] = value`**: Mengubah data pada index tertentu.
-- **`delete array[index]`**: Menghapus data pada index tertentu (namun akan meninggalkan "lubang" atau slot kosong).
+**Menambah dan Mengubah Data:**
 
 ```javascript
 const names = []; // Membuat array kosong
 
+// push() - menambah di akhir
 names.push('Robert');
 names.push('Davis', 'Chaniago'); // Bisa menambah lebih dari satu
+console.log(names); // ['Robert', 'Davis', 'Chaniago']
 
-console.table(names); // console.table() menampilkan array dalam bentuk tabel yang rapi
+// unshift() - menambah di awal
+names.unshift('Pertama');
+console.log(names); // ['Pertama', 'Robert', 'Davis', 'Chaniago']
 
-console.log(`Panjang array: ${names.length}`); // Output: Panjang array: 3
-
-// Mengubah data
+// Mengubah data dengan index
 names[0] = 'Budi';
-console.table(names); // Index 0 sekarang berisi "Budi"
+console.log(names); // ['Budi', 'Robert', 'Davis', 'Chaniago']
 
-// Menghapus data
-delete names[1];
-console.table(names); // Index 1 sekarang kosong (empty)
+// length property
+console.log(`Panjang array: ${names.length}`); // 4
+```
+
+**Menghapus Data:**
+
+```javascript
+const fruits = ['Apel', 'Jeruk', 'Mangga', 'Pisang'];
+
+// pop() - hapus dari akhir
+const lastFruit = fruits.pop();
+console.log(lastFruit); // "Pisang"
+console.log(fruits); // ['Apel', 'Jeruk', 'Mangga']
+
+// shift() - hapus dari awal
+const firstFruit = fruits.shift();
+console.log(firstFruit); // "Apel"
+console.log(fruits); // ['Jeruk', 'Mangga']
+
+// delete - hapus tapi meninggalkan "hole"
+delete fruits[0];
+console.log(fruits); // [empty, 'Mangga']
+console.log(fruits.length); // 2 (length tidak berubah!)
+
+// splice() - cara yang lebih baik untuk hapus
+const colors = ['Merah', 'Hijau', 'Biru', 'Kuning'];
+colors.splice(1, 2); // Hapus 2 elemen mulai dari index 1
+console.log(colors); // ['Merah', 'Kuning']
+```
+
+**Array Methods Utilitas:**
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// slice() - ambil sebagian array (tidak mengubah array asli)
+const subset = numbers.slice(1, 4); // dari index 1 sampai sebelum 4
+console.log(subset); // [2, 3, 4]
+console.log(numbers); // [1, 2, 3, 4, 5] (tidak berubah)
+
+// concat() - gabungkan array
+const arr1 = [1, 2];
+const arr2 = [3, 4];
+const combined = arr1.concat(arr2);
+console.log(combined); // [1, 2, 3, 4]
+
+// includes() - cek apakah ada nilai
+console.log(numbers.includes(3)); // true
+console.log(numbers.includes(10)); // false
+
+// indexOf() - cari index nilai
+console.log(numbers.indexOf(3)); // 2
+console.log(numbers.indexOf(10)); // -1 (tidak ketemu)
+
+// reverse() - balik urutan (mengubah array asli!)
+numbers.reverse();
+console.log(numbers); // [5, 4, 3, 2, 1]
+
+// sort() - urutkan (mengubah array asli!)
+const words = ['zebra', 'apple', 'mango'];
+words.sort();
+console.log(words); // ['apple', 'mango', 'zebra']
 ```
 
 ---
 
-## 2. Tipe Data Object
+### 2. Array Methods Modern
+
+Array methods modern membuat manipulasi data jauh lebih mudah dan deklaratif.
+
+#### 2.1. Method map() - Transformasi Array
+
+Method `map()` digunakan untuk **mentransformasi** setiap elemen array dan menghasilkan array baru dengan hasil transformasi tersebut.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// Kalikan setiap angka dengan 2
+const doubled = numbers.map((num) => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]
+
+// Array asli tidak berubah
+console.log(numbers); // [1, 2, 3, 4, 5]
+```
+
+**Contoh Praktis dengan Object:**
+
+```javascript
+const users = [
+  { name: 'Andi', age: 25 },
+  { name: 'Budi', age: 30 },
+  { name: 'Citra', age: 28 },
+];
+
+// Ambil hanya nama
+const names = users.map((user) => user.name);
+console.log(names); // ['Andi', 'Budi', 'Citra']
+
+// Transform ke format baru
+const userCards = users.map((user) => {
+  return {
+    fullName: user.name.toUpperCase(),
+    birthYear: 2026 - user.age,
+  };
+});
+console.log(userCards);
+/* [
+  { fullName: 'ANDI', birthYear: 2001 },
+  { fullName: 'BUDI', birthYear: 1996 },
+  { fullName: 'CITRA', birthYear: 1998 }
+] */
+```
+
+**Kapan Menggunakan map:**
+
+- Saat Anda perlu mengubah setiap elemen array
+- Saat Anda perlu array baru dengan jumlah elemen yang sama
+- Saat transformasi 1-to-1 (1 input → 1 output)
+
+#### 2.2. Method filter() - Menyaring Array
+
+Method `filter()` digunakan untuk **menyaring** elemen array berdasarkan kondisi tertentu.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// Ambil hanya angka genap
+const evens = numbers.filter((num) => num % 2 === 0);
+console.log(evens); // [2, 4, 6, 8, 10]
+
+// Ambil angka > 5
+const greaterThanFive = numbers.filter((num) => num > 5);
+console.log(greaterThanFive); // [6, 7, 8, 9, 10]
+```
+
+**Contoh Praktis:**
+
+```javascript
+const products = [
+  { name: 'Laptop', price: 10000000, stock: 5 },
+  { name: 'Mouse', price: 150000, stock: 0 },
+  { name: 'Keyboard', price: 500000, stock: 10 },
+  { name: 'Monitor', price: 2000000, stock: 3 },
+];
+
+// Filter produk yang tersedia (stock > 0)
+const available = products.filter((p) => p.stock > 0);
+console.log(available.length); // 3
+
+// Filter produk murah (price < 1 juta)
+const affordable = products.filter((p) => p.price < 1000000);
+console.log(affordable);
+/* [
+  { name: 'Mouse', price: 150000, stock: 0 },
+  { name: 'Keyboard', price: 500000, stock: 10 }
+] */
+
+// Multiple conditions
+const affordableInStock = products.filter((p) => {
+  return p.price < 1000000 && p.stock > 0;
+});
+console.log(affordableInStock);
+// [{ name: 'Keyboard', price: 500000, stock: 10 }]
+```
+
+**Kapan Menggunakan filter:**
+
+- Saat Anda perlu subset dari array berdasarkan kondisi
+- Saat Anda ingin "menyaring" data yang tidak diinginkan
+- Hasil array bisa lebih sedikit dari array asli
+
+#### 2.3. Method reduce() - Menggabungkan Menjadi Satu Nilai
+
+Method `reduce()` digunakan untuk **menggabungkan** semua elemen array menjadi satu nilai tunggal.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// Jumlahkan semua angka
+const sum = numbers.reduce((accumulator, current) => {
+  return accumulator + current;
+}, 0); // 0 adalah nilai awal accumulator
+
+console.log(sum); // 15
+
+// Cara kerjanya step by step:
+// Step 1: accumulator = 0, current = 1 → return 0 + 1 = 1
+// Step 2: accumulator = 1, current = 2 → return 1 + 2 = 3
+// Step 3: accumulator = 3, current = 3 → return 3 + 3 = 6
+// Step 4: accumulator = 6, current = 4 → return 6 + 4 = 10
+// Step 5: accumulator = 10, current = 5 → return 10 + 5 = 15
+```
+
+**Contoh Praktis - Hitung Total Belanja:**
+
+```javascript
+const cart = [
+  { name: 'Buku', price: 50000, qty: 2 },
+  { name: 'Pensil', price: 5000, qty: 5 },
+  { name: 'Tas', price: 200000, qty: 1 },
+];
+
+const totalPrice = cart.reduce((total, item) => {
+  return total + item.price * item.qty;
+}, 0);
+
+console.log(`Total: Rp${totalPrice.toLocaleString()}`);
+// Total: Rp325,000
+```
+
+**Contoh Lanjutan - Grouping Data:**
+
+```javascript
+const students = [
+  { name: 'Andi', grade: 'A' },
+  { name: 'Budi', grade: 'B' },
+  { name: 'Citra', grade: 'A' },
+  { name: 'Dodi', grade: 'C' },
+  { name: 'Eko', grade: 'B' },
+];
+
+const grouped = students.reduce((acc, student) => {
+  const grade = student.grade;
+  if (!acc[grade]) {
+    acc[grade] = [];
+  }
+  acc[grade].push(student.name);
+  return acc;
+}, {});
+
+console.log(grouped);
+/* {
+  A: ['Andi', 'Citra'],
+  B: ['Budi', 'Eko'],
+  C: ['Dodi']
+} */
+```
+
+**Kapan Menggunakan reduce:**
+
+- Saat Anda perlu "mengurangi" array jadi satu nilai
+- Menghitung sum, average, max, min
+- Grouping atau transformasi ke object/struktur lain
+- Flatten nested arrays
+
+#### 2.4. Method find() dan findIndex()
+
+`find()` mencari elemen pertama yang memenuhi kondisi, `findIndex()` mencari index-nya.
+
+```javascript
+const users = [
+  { id: 1, name: 'Andi', active: true },
+  { id: 2, name: 'Budi', active: false },
+  { id: 3, name: 'Citra', active: true },
+];
+
+// find() - return elemen pertama yang match
+const user = users.find((u) => u.id === 2);
+console.log(user); // { id: 2, name: 'Budi', active: false }
+
+const notFound = users.find((u) => u.id === 99);
+console.log(notFound); // undefined
+
+// findIndex() - return index
+const index = users.findIndex((u) => u.name === 'Citra');
+console.log(index); // 2
+
+const notFoundIndex = users.findIndex((u) => u.id === 99);
+console.log(notFoundIndex); // -1
+```
+
+#### 2.5. Method some() dan every()
+
+`some()` mengecek apakah **ada minimal satu** elemen yang memenuhi kondisi, `every()` mengecek apakah **semua** elemen memenuhi kondisi.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// some() - apakah ada yang genap?
+const hasEven = numbers.some((num) => num % 2 === 0);
+console.log(hasEven); // true
+
+// every() - apakah semua positif?
+const allPositive = numbers.every((num) => num > 0);
+console.log(allPositive); // true
+
+// every() - apakah semua genap?
+const allEven = numbers.every((num) => num % 2 === 0);
+console.log(allEven); // false
+```
+
+**Contoh Praktis - Validasi:**
+
+```javascript
+const forms = [
+  { field: 'name', value: 'Andi', required: true },
+  { field: 'email', value: 'andi@email.com', required: true },
+  { field: 'phone', value: '', required: false },
+];
+
+// Apakah semua required field terisi?
+const allRequiredFilled = forms.every((field) => {
+  if (field.required) {
+    return field.value.trim() !== '';
+  }
+  return true;
+});
+
+console.log(allRequiredFilled); // true
+
+// Apakah ada field yang kosong?
+const hasEmptyField = forms.some((field) => field.value === '');
+console.log(hasEmptyField); // true
+```
+
+#### 2.6. Method forEach()
+
+`forEach()` mengeksekusi fungsi untuk setiap elemen (seperti loop, tapi functional style).
+
+```javascript
+const fruits = ['Apel', 'Jeruk', 'Mangga'];
+
+// Dengan forEach
+fruits.forEach((fruit, index) => {
+  console.log(`${index + 1}. ${fruit}`);
+});
+/* Output:
+1. Apel
+2. Jeruk
+3. Mangga
+*/
+
+// Mirip dengan for loop, tapi lebih deklaratif
+// forEach TIDAK bisa di-break atau continue
+// forEach TIDAK return value baru
+```
+
+**forEach vs map:**
+
+| forEach                                      | map                     |
+| :------------------------------------------- | :---------------------- |
+| Tidak return array baru                      | Return array baru       |
+| Untuk side effects (console.log, update DOM) | Untuk transformasi data |
+| Tidak bisa di-chain                          | Bisa di-chain           |
+
+---
+
+### 3. Method Chaining
+
+Method chaining adalah teknik menggabungkan beberapa array methods.
+
+```javascript
+const products = [
+  { name: 'Laptop', price: 1000, category: 'Electronics' },
+  { name: 'Phone', price: 500, category: 'Electronics' },
+  { name: 'Shirt', price: 50, category: 'Clothing' },
+  { name: 'Tablet', price: 300, category: 'Electronics' },
+];
+
+// Filter Electronics, ambil harganya, lalu jumlahkan
+const totalElectronics = products
+  .filter((p) => p.category === 'Electronics') // [Laptop, Phone, Tablet]
+  .map((p) => p.price) // [1000, 500, 300]
+  .reduce((sum, price) => sum + price, 0); // 1800
+
+console.log(totalElectronics); // 1800
+```
+
+**Contoh Kompleks:**
+
+```javascript
+const users = [
+  { name: 'Andi', age: 25, city: 'Jakarta', salary: 5000000 },
+  { name: 'Budi', age: 30, city: 'Bandung', salary: 7000000 },
+  { name: 'Citra', age: 28, city: 'Jakarta', salary: 6000000 },
+  { name: 'Dodi', age: 35, city: 'Surabaya', salary: 8000000 },
+];
+
+// Cari rata-rata gaji user di Jakarta yang umur > 20
+const avgJakartaSalary = users
+  .filter((u) => u.city === 'Jakarta') // Filter Jakarta
+  .filter((u) => u.age > 20) // Filter age > 20
+  .map((u) => u.salary) // Ambil salary
+  .reduce((sum, salary, index, arr) => {
+    // Hitung average
+    sum += salary;
+    if (index === arr.length - 1) {
+      return sum / arr.length;
+    }
+    return sum;
+  }, 0);
+
+console.log(`Rata-rata: Rp${avgJakartaSalary.toLocaleString()}`);
+// Rata-rata: Rp5,500,000
+```
+
+**Best Practices untuk Method Chaining:**
+
+```javascript
+// BAIK: Readable, satu method per baris
+const result = data
+  .filter((item) => item.active)
+  .map((item) => item.value)
+  .reduce((sum, val) => sum + val, 0);
+
+// BURUK: Sulit dibaca
+const result2 = data
+  .filter((item) => item.active)
+  .map((item) => item.value)
+  .reduce((sum, val) => sum + val, 0);
+```
+
+---
+
+### 4. Tipe Data Object
 
 > **Object** adalah tipe data yang mirip dengan array, tetapi tidak menggunakan index angka. Ia menggunakan **`key`** (kunci) untuk mengidentifikasi datanya. Object adalah kumpulan dari pasangan `key: value`.
 
 Bayangkan Object sebagai sebuah biodata, di mana `key` adalah labelnya (seperti "Nama" atau "Umur") dan `value` adalah datanya.
 
-### 2.1. Membuat dan Mengakses Object
+#### 4.1. Membuat dan Mengakses Object
 
 Object dibuat menggunakan kurung kurawal `{}`.
 
@@ -84,22 +519,111 @@ console.log(`Alamat: ${orang['alamat']}`); // Output: Alamat: Indonesia
 
 // Menambah properti baru
 orang.pekerjaan = 'Programmer';
+orang['hobi'] = 'Coding';
 
 // Menghapus properti
 delete orang.umur;
 
-console.table(orang);
+console.log(orang);
+// { nama: 'Waliudin', alamat: 'Indonesia', pekerjaan: 'Programmer', hobi: 'Coding' }
+```
+
+**Kapan Menggunakan Bracket vs Dot:**
+
+```javascript
+const user = {
+  name: 'Andi',
+  'favorite-color': 'blue', // Key dengan dash
+  2023: 'data tahun', // Key yang dimulai angka
+};
+
+// Dot notation - tidak bisa untuk key dengan karakter special
+// console.log(user.favorite-color); // Error
+
+// Bracket notation - bisa untuk semua key
+console.log(user['favorite-color']); // "blue"
+console.log(user['2023']); // "data tahun"
+
+// Bracket notation dengan variabel
+const prop = 'name';
+console.log(user[prop]); // "Andi"
+```
+
+#### 4.2. Object Methods dan Computed Properties
+
+```javascript
+// Object dengan method
+const calculator = {
+  value: 0,
+  add: function (num) {
+    this.value += num;
+    return this;
+  },
+  subtract(num) {
+    // Shorthand method
+    this.value -= num;
+    return this;
+  },
+  getValue() {
+    return this.value;
+  },
+};
+
+calculator.add(10).subtract(3);
+console.log(calculator.getValue()); // 7
+
+// Computed property names
+const key = 'dynamic';
+const obj = {
+  [key]: 'value', // Property name dari variabel
+  [`${key}Key`]: 'another', // Dengan template literal
+  [1 + 2]: 'three', // Dengan ekspresi
+};
+
+console.log(obj);
+// { dynamic: 'value', dynamicKey: 'another', 3: 'three' }
+```
+
+#### 4.3. Object Utility Methods
+
+```javascript
+const user = {
+  name: 'Andi',
+  age: 25,
+  city: 'Jakarta',
+};
+
+// Object.keys() - ambil semua keys
+const keys = Object.keys(user);
+console.log(keys); // ['name', 'age', 'city']
+
+// Object.values() - ambil semua values
+const values = Object.values(user);
+console.log(values); // ['Andi', 25, 'Jakarta']
+
+// Object.entries() - ambil pairs [key, value]
+const entries = Object.entries(user);
+console.log(entries);
+// [['name', 'Andi'], ['age', 25], ['city', 'Jakarta']]
+
+// Berguna untuk iterasi
+entries.forEach(([key, value]) => {
+  console.log(`${key}: ${value}`);
+});
+/* Output:
+name: Andi
+age: 25
+city: Jakarta
+*/
 ```
 
 ---
 
-## 3. Iterasi Modern: `for...of` vs. `for...in`
+### 5. Iterasi Modern: for...of vs for...in
 
-Selain loop `for` biasa, JavaScript menyediakan cara yang lebih modern dan mudah dibaca untuk melakukan iterasi pada Array dan Object.
+#### 5.1. for...of (Untuk Array dan Iterable)
 
-### 3.1. `for...of` (Untuk Array dan Tipe Data Iterable Lainnya)
-
-Perulangan ini digunakan untuk melakukan iterasi pada **nilai (value)** dari sebuah data _iterable_ (seperti Array dan String). Ini adalah cara yang direkomendasikan untuk mengulang setiap item dalam sebuah array.
+Perulangan ini digunakan untuk melakukan iterasi pada **nilai (value)** dari sebuah data iterable.
 
 ```javascript
 const names = ['Robert', 'Davis', 'Chaniago'];
@@ -112,9 +636,31 @@ Robert
 Davis
 Chaniago
 */
+
+// Dengan index menggunakan entries()
+for (const [index, name] of names.entries()) {
+  console.log(`${index + 1}. ${name}`);
+}
+/* Output:
+1. Robert
+2. Davis
+3. Chaniago
+*/
 ```
 
-### 3.2. `for...in` (Untuk Object)
+**Tidak bisa digunakan untuk object biasa:**
+
+```javascript
+const obj = { a: 1, b: 2 };
+// for (const item of obj) {} // Error: obj is not iterable
+
+// Solusi: gunakan Object.keys/values/entries
+for (const key of Object.keys(obj)) {
+  console.log(key, obj[key]);
+}
+```
+
+#### 5.2. for...in (Untuk Object)
 
 Perulangan ini digunakan untuk melakukan iterasi pada **properti (key)** dari sebuah object.
 
@@ -122,6 +668,7 @@ Perulangan ini digunakan untuk melakukan iterasi pada **properti (key)** dari se
 const person = {
   firstName: 'Siva',
   lastName: 'Aprilia',
+  age: 25,
 };
 
 for (const property in person) {
@@ -130,22 +677,42 @@ for (const property in person) {
 /* Output:
 Property: firstName, Value: Siva
 Property: lastName, Value: Aprilia
+Property: age, Value: 25
 */
 ```
 
-<Aside title="Peringatan" type="caution">
+**Peringatan dengan Array:**
 
-Jangan gunakan `for...in` untuk melakukan iterasi pada Array, karena ia tidak dirancang untuk itu dan dapat menyebabkan perilaku yang tidak terduga.
+```javascript
+const arr = ['a', 'b', 'c'];
+arr.customProp = 'custom';
 
-</Aside>
+// for...in iterasi SEMUA enumerable properties (termasuk non-index)
+for (const key in arr) {
+  console.log(key); // "0", "1", "2", "customProp"
+}
+
+// for...of hanya iterasi values
+for (const value of arr) {
+  console.log(value); // "a", "b", "c"
+}
+```
+
+**Kapan Menggunakan Yang Mana:**
+
+| Gunakan for...of                  | Gunakan for...in          |
+| :-------------------------------- | :------------------------ |
+| Iterasi nilai array               | Iterasi keys object       |
+| Iterasi string, Set, Map          | Debug/inspeksi properties |
+| Lebih modern dan aman untuk array | Legacy code               |
 
 ---
 
-## 4. Destructuring: Membongkar Nilai dengan Elegan
+### 6. Destructuring: Membongkar Nilai dengan Elegan
 
-**Destructuring** adalah fitur yang memungkinkan kita untuk "membongkar" nilai-nilai dari array atau properti dari object ke dalam variabel-variabel terpisah. Ini membuat kode jauh lebih ringkas.
+**Destructuring** adalah fitur yang memungkinkan kita untuk "membongkar" nilai-nilai dari array atau properti dari object ke dalam variabel-variabel terpisah.
 
-### 4.1. Destructuring Array
+#### 6.1. Destructuring Array
 
 ```javascript
 const names = ['Adnan', 'Fuadi', 'Beyhaqi'];
@@ -156,12 +723,36 @@ const names = ['Adnan', 'Fuadi', 'Beyhaqi'];
 
 // Cara baru dengan destructuring
 const [name1, name2, name3] = names;
-
 console.log(name1); // Output: Adnan
 console.log(name2); // Output: Fuadi
+
+// Skip element
+const [first, , third] = names;
+console.log(first); // Adnan
+console.log(third); // Beyhaqi
+
+// Rest pattern
+const [head, ...tail] = names;
+console.log(head); // 'Adnan'
+console.log(tail); // ['Fuadi', 'Beyhaqi']
+
+// Default values
+const [a, b, c, d = 'Default'] = names;
+console.log(d); // 'Default' (karena names[3] undefined)
 ```
 
-### 4.2. Destructuring Object
+**Swap Values dengan Destructuring:**
+
+```javascript
+let x = 1;
+let y = 2;
+
+// Swap tanpa variable temporary
+[x, y] = [y, x];
+console.log(x, y); // 2 1
+```
+
+#### 6.2. Destructuring Object
 
 Untuk object, nama variabel harus sama dengan nama `key` di dalam object.
 
@@ -169,8 +760,10 @@ Untuk object, nama variabel harus sama dengan nama `key` di dalam object.
 const person = {
   firstName: 'Adnan',
   lastName: 'Fuadi',
+  age: 25,
   address: {
     city: 'Jakarta',
+    country: 'Indonesia',
   },
 };
 
@@ -180,19 +773,317 @@ const person = {
 
 // Cara baru dengan destructuring
 const { firstName, lastName } = person;
-
 console.log(firstName); // Output: Adnan
 console.log(lastName); // Output: Fuadi
+
+// Rename variable
+const { firstName: nama, age: umur } = person;
+console.log(nama); // Adnan
+console.log(umur); // 25
+
+// Default values
+const { firstName: fn, city = 'Unknown' } = person;
+console.log(fn); // Adnan
+console.log(city); // Unknown (karena person.city undefined)
+
+// Nested destructuring
+const {
+  address: { city, country },
+} = person;
+console.log(city); // Jakarta
+console.log(country); // Indonesia
 ```
+
+**Destructuring dalam Function Parameters:**
+
+```javascript
+// Tanpa destructuring
+function printUser(user) {
+  console.log(`${user.name} dari ${user.city}`);
+}
+
+// Dengan destructuring
+function printUserDestruct({ name, city }) {
+  console.log(`${name} dari ${city}`);
+}
+
+const user = { name: 'Andi', city: 'Jakarta', age: 25 };
+printUserDestruct(user); // "Andi dari Jakarta"
+
+// Dengan default values
+function greet({ name = 'Guest', greeting = 'Hello' } = {}) {
+  console.log(`${greeting}, ${name}!`);
+}
+
+greet({ name: 'Andi' }); // "Hello, Andi!"
+greet({ greeting: 'Hi' }); // "Hi, Guest!"
+greet(); // "Hello, Guest!"
+```
+
+---
+
+### 7. Immutability dan Cloning
+
+**Immutability** adalah praktik tidak mengubah data asli, tapi membuat copy baru.
+
+#### 7.1. Mengapa Immutability Penting?
+
+```javascript
+// Masalah dengan mutability
+const original = [1, 2, 3];
+const reference = original; // Bukan copy, tapi reference!
+
+reference.push(4);
+console.log(original); // [1, 2, 3, 4] - ikut berubah!
+```
+
+#### 7.2. Shallow Copy
+
+**Spread Operator:**
+
+```javascript
+// Array
+const original = [1, 2, 3];
+const copy = [...original]; // Shallow copy
+copy.push(4);
+console.log(original); // [1, 2, 3] - tidak berubah
+console.log(copy); // [1, 2, 3, 4]
+
+// Object
+const user = { name: 'Andi', age: 25 };
+const userCopy = { ...user };
+userCopy.age = 30;
+console.log(user.age); // 25 - tidak berubah
+console.log(userCopy.age); // 30
+```
+
+**Object.assign():**
+
+```javascript
+const original = { a: 1, b: 2 };
+const copy = Object.assign({}, original);
+copy.c = 3;
+console.log(original); // { a: 1, b: 2 }
+console.log(copy); // { a: 1, b: 2, c: 3 }
+```
+
+#### 7.3. Deep Copy
+
+Shallow copy tidak cukup untuk nested structures:
+
+```javascript
+const user = {
+  name: 'Andi',
+  address: {
+    city: 'Jakarta',
+  },
+};
+
+// Shallow copy - nested object masih reference
+const shallowCopy = { ...user };
+shallowCopy.address.city = 'Bandung';
+console.log(user.address.city); // 'Bandung' - ikut berubah!
+
+// Deep copy dengan structuredClone (modern)
+const deepCopy = structuredClone(user);
+deepCopy.address.city = 'Surabaya';
+console.log(user.address.city); // 'Bandung' - tidak berubah
+console.log(deepCopy.address.city); // 'Surabaya'
+
+// Deep copy dengan JSON (cara lama, ada limitasi)
+const deepCopy2 = JSON.parse(JSON.stringify(user));
+// Limitasi: tidak bisa copy functions, undefined, Date, dll
+```
+
+#### 7.4. Immutable Array Operations
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// MUTABLE (mengubah array asli) - HINDARI
+numbers.push(6); // Menambah
+numbers.pop(); // Menghapus
+numbers.sort(); // Mengurutkan
+numbers.reverse(); // Membalik
+
+// IMMUTABLE (return array baru) - RECOMMENDED
+const added = [...numbers, 6]; // Menambah
+const removed = numbers.slice(0, -1); // Menghapus terakhir
+const filtered = numbers.filter((n) => n !== 3); // Hapus yang match
+const mapped = numbers.map((n) => n * 2); // Transform
+const sorted = [...numbers].sort(); // Sort copy
+```
+
+---
+
+## Praktik
+
+### Latihan 1: Array Basics
+
+**Tingkat**: Dasar
+
+**Tujuan**: Menguasai operasi dasar array
+
+**Instruksi**:
+Buat program yang:
+
+1. Membuat array kosong `students`
+2. Tambah 3 nama dengan `push`
+3. Tambah 1 nama di awal dengan `unshift`
+4. Hapus nama terakhir
+5. Tampilkan panjang array dan semua isi
+
+### Latihan 2: Array Methods - map & filter
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menggunakan map dan filter
+
+**Instruksi**:
+Diberikan array:
+
+```javascript
+const scores = [45, 67, 89, 90, 55, 73, 82, 95];
+```
+
+1. Filter nilai >= 70 (lulus)
+2. Map nilai lulus jadi format: "Nilai: [X] - Lulus"
+3. Tampilkan hasilnya
+
+### Latihan 3: reduce untuk Statistik
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menguasai reduce
+
+**Instruksi**:
+Diberikan data transaksi:
+
+```javascript
+const transactions = [
+  { type: 'income', amount: 5000000 },
+  { type: 'expense', amount: 2000000 },
+  { type: 'income', amount: 3000000 },
+  { type: 'expense', amount: 1500000 },
+];
+```
+
+Hitung:
+
+1. Total income
+2. Total expense
+3. Balance (income - expense)
+
+Gunakan reduce untuk semua perhitungan.
+
+### Latihan 4: Method Chaining
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menggabungkan multiple methods
+
+**Instruksi**:
+Diberikan data karyawan:
+
+```javascript
+const employees = [
+  { name: 'Andi', dept: 'IT', salary: 8000000 },
+  { name: 'Budi', dept: 'HR', salary: 6000000 },
+  { name: 'Citra', dept: 'IT', salary: 9000000 },
+  { name: 'Dodi', dept: 'Finance', salary: 7000000 },
+  { name: 'Eko', dept: 'IT', salary: 8500000 },
+];
+```
+
+Dengan method chaining, cari rata-rata gaji dept IT.
+
+### Latihan 5: Object Manipulation
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menguasai object operations
+
+**Instruksi**:
+Buat object `book` dengan properties: title, author, year, genres (array).
+Implementasi:
+
+1. Tambah property `rating`
+2. Update `year`
+3. Tambah genre baru ke array `genres` (immutable!)
+4. Iterasi semua properties dengan for...in
+5. Tampilkan semua values dengan Object.values()
+
+### Latihan 6: Destructuring Kompleks
+
+**Tingkat**: Lanjutan
+
+**Tujuan**: Menguasai destructuring
+
+**Instruksi**:
+Diberikan object:
+
+```javascript
+const response = {
+  status: 200,
+  data: {
+    user: {
+      id: 1,
+      profile: {
+        name: 'Andi',
+        email: 'andi@email.com',
+      },
+      settings: {
+        theme: 'dark',
+        notifications: true,
+      },
+    },
+  },
+};
+```
+
+Extract: status, name, email, theme dengan nested destructuring.
+
+### Tantangan: E-Commerce Cart System
+
+**Tingkat**: Lanjutan
+
+**Tujuan**: Menggabungkan semua konsep
+
+**Instruksi**:
+Buat sistem shopping cart dengan:
+
+```javascript
+const products = [
+  { id: 1, name: 'Laptop', price: 10000000, category: 'Electronics' },
+  { id: 2, name: 'Mouse', price: 150000, category: 'Electronics' },
+  { id: 3, name: 'Keyboard', price: 500000, category: 'Electronics' },
+  { id: 4, name: 'Shirt', price: 200000, category: 'Clothing' },
+];
+```
+
+Implementasi functions (semuanya PURE & IMMUTABLE):
+
+1. `addToCart(cart, productId, quantity)` - tambah item ke cart
+2. `removeFromCart(cart, productId)` - hapus item
+3. `updateQuantity(cart, productId, newQty)` - update qty
+4. `getCartSummary(cart)` - `return { total, itemCount, items }`
+5. `getDiscountedTotal(cart, discountPercent)` - dengan diskon
+6. `filterByCategory(cart, category)` - filter items by category
+
+Test semua functions dan pastikan cart original tidak berubah!
 
 ---
 
 ## Rangkuman Sesi 5
 
-- **Array** digunakan untuk kumpulan data yang **terurut** dan diakses menggunakan **index** angka.
-- **Object** digunakan untuk kumpulan data yang tidak terurut dalam format **`key: value`** dan diakses menggunakan `key`.
-- Gunakan **`for...of`** untuk iterasi nilai pada Array.
-- Gunakan **`for...in`** untuk iterasi properti (key) pada Object.
-- **Destructuring** adalah cara modern untuk mengekstrak data dari Array dan Object dengan lebih ringkas.
+Selamat! Anda telah menguasai struktur data dan manipulasinya:
 
-Anda sekarang dapat mengelola data dalam bentuk kumpulan. Di sesi terakhir, kita akan membahas beberapa konsep fungsi yang lebih dalam untuk menyempurnakan pemahaman JavaScript Anda.
+- **Array** untuk menyimpan data terurut dengan index
+- **Array methods modern** (map, filter, reduce, find, some, every) untuk manipulasi data deklaratif
+- **Method chaining** untuk operasi kompleks yang readable
+- **Object** untuk data dengan key-value pairs
+- **for...of dan for...in** untuk iterasi modern
+- **Destructuring** untuk extract data dengan elegan
+- **Immutability** untuk kode yang lebih aman dan predictable
+
+Di sesi berikutnya, kita akan mempelajari **konsep lanjutan** seperti scope, closure, recursion, dan best practices untuk menjadi programmer JavaScript yang mahir!

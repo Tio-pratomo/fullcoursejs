@@ -1,0 +1,1224 @@
+---
+title: Clean Code & Best Practices
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Selamat datang di sesi terakhir! Di sesi ini, kita akan belajar bagaimana menulis kode JavaScript yang bersih, mudah dibaca, dan mudah di-maintain.
+
+Clean code bukan hanya tentang kode yang "bekerja", tapi kode yang mudah dipahami oleh developer lain (termasuk diri Anda di masa depan).
+
+<Aside title="Quotes" icon="open-book" type="tip">
+
+**"Any fool can write code that a computer can understand. Good programmers write code that humans can understand." - Martin Fowler**
+
+</Aside>
+
+---
+
+## Materi: Pengetahuan & Konsep
+
+### 1. Naming Conventions
+
+Penamaan yang baik adalah fondasi dari clean code.
+
+#### 1.1. Konvensi Penamaan di JavaScript
+
+**camelCase untuk Variables dan Functions:**
+
+```javascript
+// BAIK
+const userName = 'Andi';
+const userAge = 25;
+const isUserActive = true;
+
+function getUserData() {
+  return { userName, userAge };
+}
+
+function calculateTotalPrice(items) {
+  // implementation
+}
+
+// BURUK
+const UserName = 'Andi'; // PascalCase untuk class, bukan variable
+const user_age = 25; // snake_case bukan JavaScript style
+const IsUserActive = true; // Tidak konsisten
+```
+
+**PascalCase untuk Classes dan Constructors:**
+
+```javascript
+// BAIK
+class UserAccount {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class ShoppingCart {
+  // implementation
+}
+
+// BURUK
+class userAccount {} // Harus PascalCase
+class shopping_cart {} // snake_case
+```
+
+**UPPER_CASE untuk Constants:**
+
+```javascript
+// BAIK - Konstanta yang benar-benar tidak berubah
+const MAX_USERS = 100;
+const API_BASE_URL = 'https://api.example.com';
+const DEFAULT_TIMEOUT = 3000;
+const TAX_RATE = 0.1;
+
+// BAIK - const biasa tetap camelCase
+const userConfig = { theme: 'dark' };
+const cartItems = [];
+
+// BURUK
+const maxUsers = 100; // Konstanta global sebaiknya UPPER_CASE
+const Max_Users = 100; // Format tidak konsisten
+```
+
+#### 1.2. Meaningful Names
+
+**Gunakan Nama yang Deskriptif:**
+
+```javascript
+// BURUK - Tidak deskriptif
+const d = new Date();
+const x = users.filter((u) => u.age > 18);
+function calc(a, b) {
+  return a * b * 0.1;
+}
+
+// BAIK - Jelas dan deskriptif
+const currentDate = new Date();
+const activeAdultUsers = users.filter((user) => user.age > 18);
+function calculateDiscount(price, quantity) {
+  const DISCOUNT_RATE = 0.1;
+  return price * quantity * DISCOUNT_RATE;
+}
+```
+
+**Hindari Single Letter Names (kecuali untuk loop counter):**
+
+```javascript
+// BAIK untuk loop counter
+for (let i = 0; i < items.length; i++) {
+  console.log(items[i]);
+}
+
+// BAIK untuk callback singkat
+items.map((item, i) => ({ ...item, index: i }));
+
+// BURUK untuk variable biasa
+const u = getCurrentUser();
+const p = calculatePrice();
+```
+
+#### 1.3. Boolean Naming
+
+Gunakan prefix yang jelas untuk boolean:
+
+```javascript
+// BAIK - Langsung jelas ini boolean
+const isActive = true;
+const hasPermission = false;
+const canEdit = user.role === 'admin';
+const shouldUpdate = data.changed;
+
+// Gunakan prefix yang tepat
+const isLoading = false; // "is" untuk state
+const hasError = false; // "has" untuk possession
+const canSubmit = true; // "can" untuk ability
+const shouldRetry = true; // "should" untuk recommendation
+
+// BURUK - Tidak jelas boolean atau bukan
+const active = true; // Bisa boolean atau string
+const permission = false; // Tidak jelas
+const edit = true; // Bisa boolean atau verb
+```
+
+#### 1.4. Function Naming
+
+Function name harus verb atau verb phrase:
+
+```javascript
+// BAIK - Action-based names
+function getUser(id) {}
+function createOrder(items) {}
+function updateProfile(data) {}
+function deleteAccount(userId) {}
+function validateEmail(email) {}
+function calculateTotal(items) {}
+function formatCurrency(amount) {}
+function isValidAge(age) {}
+
+// BURUK - Noun-based atau tidak jelas
+function user(id) {} // Bukan verb
+function order(items) {} // Ambiguous
+function profile(data) {} // Tidak jelas action
+function email(input) {} // Bisa getter atau validator?
+```
+
+**Common Prefixes:**
+
+| Prefix       | Meaning                | Example            |
+| :----------- | :--------------------- | :----------------- |
+| `get`        | Retrieve data          | `getUserData()`    |
+| `set`        | Set/update data        | `setUserName()`    |
+| `create`     | Create new entity      | `createAccount()`  |
+| `update`     | Modify existing        | `updateProfile()`  |
+| `delete`     | Remove entity          | `deleteUser()`     |
+| `remove`     | Remove from collection | `removeItem()`     |
+| `add`        | Add to collection      | `addToCart()`      |
+| `is/has/can` | Boolean check          | `isValid()`        |
+| `calculate`  | Perform calculation    | `calculateTotal()` |
+| `validate`   | Validation             | `validateInput()`  |
+| `format`     | Format data            | `formatDate()`     |
+| `parse`      | Parse data             | `parseJSON()`      |
+
+#### 1.5. Avoid Abbreviations
+
+```javascript
+// BURUK - Abbreviations membingungkan
+const usrMgr = new UserManager();
+const calcTtlPrc = (itms) => {};
+const getCurrDt = () => new Date();
+
+// BAIK - Full words lebih jelas
+const userManager = new UserManager();
+const calculateTotalPrice = (items) => {};
+const getCurrentDate = () => new Date();
+
+// EXCEPTION - Abbreviations yang umum OK
+const API_URL = 'https://api.example.com'; // API umum
+const ID = user.id; // ID umum
+const URL = window.location.href; // URL umum
+```
+
+---
+
+### 2. Code Organization
+
+#### 2.1. One Function, One Purpose (Single Responsibility)
+
+Setiap fungsi harus melakukan satu hal saja:
+
+```javascript
+// BURUK - Fungsi melakukan terlalu banyak hal
+function processUser(user) {
+  // Validate
+  if (!user.email) throw new Error('Email required');
+  if (!user.name) throw new Error('Name required');
+
+  // Transform
+  user.email = user.email.toLowerCase();
+  user.name = user.name.trim();
+
+  // Save to database
+  db.users.insert(user);
+
+  // Send email
+  sendWelcomeEmail(user.email);
+
+  // Log
+  console.log(`User ${user.name} created`);
+
+  return user;
+}
+
+// BAIK - Dipecah jadi fungsi-fungsi kecil
+function validateUser(user) {
+  if (!user.email) throw new Error('Email required');
+  if (!user.name) throw new Error('Name required');
+}
+
+function normalizeUser(user) {
+  return {
+    ...user,
+    email: user.email.toLowerCase(),
+    name: user.name.trim(),
+  };
+}
+
+function saveUser(user) {
+  return db.users.insert(user);
+}
+
+function notifyNewUser(user) {
+  sendWelcomeEmail(user.email);
+  console.log(`User ${user.name} created`);
+}
+
+function processUser(user) {
+  validateUser(user);
+  const normalized = normalizeUser(user);
+  const saved = saveUser(normalized);
+  notifyNewUser(saved);
+  return saved;
+}
+```
+
+#### 2.2. Function Length Guidelines
+
+Keep functions small - ideally under 20 lines:
+
+```javascript
+// BURUK - Fungsi terlalu panjang
+function generateReport(users) {
+  let report = '=== USER REPORT ===\n';
+  let totalUsers = users.length;
+  let activeUsers = 0;
+  let premiumUsers = 0;
+
+  for (let user of users) {
+    if (user.isActive) activeUsers++;
+    if (user.isPremium) premiumUsers++;
+  }
+
+  let activePercentage = ((activeUsers / totalUsers) * 100).toFixed(2);
+  let premiumPercentage = ((premiumUsers / totalUsers) * 100).toFixed(2);
+
+  report += `Total Users: ${totalUsers}\n`;
+  report += `Active Users: ${activeUsers} (${activePercentage}%)\n`;
+  report += `Premium Users: ${premiumUsers} (${premiumPercentage}%)\n`;
+  report += '\nUser List:\n';
+
+  for (let user of users) {
+    report += `- ${user.name} (${user.email})`;
+    if (user.isActive) report += ' [Active]';
+    if (user.isPremium) report += ' [Premium]';
+    report += '\n';
+  }
+
+  return report;
+}
+
+// BAIK - Dipecah jadi fungsi-fungsi kecil
+function countActiveUsers(users) {
+  return users.filter((user) => user.isActive).length;
+}
+
+function countPremiumUsers(users) {
+  return users.filter((user) => user.isPremium).length;
+}
+
+function calculatePercentage(count, total) {
+  return ((count / total) * 100).toFixed(2);
+}
+
+function generateReportHeader(users) {
+  const total = users.length;
+  const active = countActiveUsers(users);
+  const premium = countPremiumUsers(users);
+
+  return [
+    '=== USER REPORT ===',
+    `Total Users: ${total}`,
+    `Active Users: ${active} (${calculatePercentage(active, total)}%)`,
+    `Premium Users: ${premium} (${calculatePercentage(premium, total)}%)`,
+    '',
+  ].join('\n');
+}
+
+function formatUserLine(user) {
+  let line = `- ${user.name} (${user.email})`;
+  if (user.isActive) line += ' [Active]';
+  if (user.isPremium) line += ' [Premium]';
+  return line;
+}
+
+function generateReportBody(users) {
+  return 'User List:\n' + users.map(formatUserLine).join('\n');
+}
+
+function generateReport(users) {
+  return generateReportHeader(users) + '\n' + generateReportBody(users);
+}
+```
+
+#### 2.3. DRY Principle (Don't Repeat Yourself)
+
+Hindari duplikasi kode:
+
+```javascript
+// BURUK - Code duplication
+function getActiveUsers() {
+  return users.filter((user) => user.status === 'active');
+}
+
+function getActivePremiumUsers() {
+  return users.filter((user) => user.status === 'active' && user.isPremium);
+}
+
+function getActiveUsersInCity(city) {
+  return users.filter((user) => user.status === 'active' && user.city === city);
+}
+
+// BAIK - DRY
+function filterUsers(predicate) {
+  return users.filter(predicate);
+}
+
+function isActive(user) {
+  return user.status === 'active';
+}
+
+function getActiveUsers() {
+  return filterUsers(isActive);
+}
+
+function getActivePremiumUsers() {
+  return filterUsers((user) => isActive(user) && user.isPremium);
+}
+
+function getActiveUsersInCity(city) {
+  return filterUsers((user) => isActive(user) && user.city === city);
+}
+```
+
+#### 2.4. KISS Principle (Keep It Simple, Stupid)
+
+Jangan over-engineer:
+
+```javascript
+// BURUK - Over-complicated
+function isEven(number) {
+  const binary = number.toString(2);
+  const lastDigit = binary[binary.length - 1];
+  return lastDigit === '0' ? true : false;
+}
+
+// BAIK - Simple and clear
+function isEven(number) {
+  return number % 2 === 0;
+}
+
+// BURUK - Unnecessary abstraction
+class NumberChecker {
+  constructor(number) {
+    this.number = number;
+  }
+
+  isEven() {
+    return this.number % 2 === 0;
+  }
+}
+const checker = new NumberChecker(4);
+console.log(checker.isEven());
+
+// BAIK - Just a function
+function isEven(number) {
+  return number % 2 === 0;
+}
+console.log(isEven(4));
+```
+
+---
+
+### 3. Comments: What and When
+
+#### 3.1. Comment the "Why", Not the "What"
+
+```javascript
+// BURUK - Menjelaskan apa yang sudah jelas
+// Loop through users
+for (let user of users) {
+  // Print user name
+  console.log(user.name);
+}
+
+// Increment counter
+counter++;
+
+// BAIK - Menjelaskan "why" dan context
+// We use setTimeout here to avoid blocking the main thread
+// while processing large datasets
+setTimeout(() => processLargeData(data), 0);
+
+// API returns price in cents, convert to dollars
+const priceInDollars = priceInCents / 100;
+
+// Workaround for IE11 bug where Date.parse fails with ISO format
+const date = new Date(dateString.replace('T', ' '));
+```
+
+#### 3.2. Self-Documenting Code
+
+Code yang baik tidak butuh banyak comment:
+
+```javascript
+// BURUK - Butuh comment untuk explain
+// Check if user is adult and has permission
+if (u.age >= 18 && u.perm === 'admin') {
+  // Process
+}
+
+// BAIK - Code explains itself
+const isAdult = user.age >= 18;
+const isAdmin = user.permission === 'admin';
+
+if (isAdult && isAdmin) {
+  processAdminRequest();
+}
+
+// Atau extract jadi function
+function canProcessAdminRequest(user) {
+  return user.age >= 18 && user.permission === 'admin';
+}
+
+if (canProcessAdminRequest(user)) {
+  processAdminRequest();
+}
+```
+
+#### 3.3. TODO Comments
+
+Gunakan TODO untuk menandai pekerjaan yang perlu dilakukan:
+
+```javascript
+// TODO: Add validation for email format
+function registerUser(email, password) {
+  // implementation
+}
+
+// FIXME: This calculation is incorrect for edge cases
+function calculateDiscount(price) {
+  return price * 0.1; // FIXME: Should handle bulk discounts
+}
+
+// HACK: Temporary workaround until API v2 is ready
+function getUserData(id) {
+  // HACK: Using old endpoint
+  return fetch(`/api/v1/users/${id}`);
+}
+```
+
+#### 3.4. JSDoc for Public APIs
+
+Gunakan JSDoc untuk functions yang digunakan di banyak tempat:
+
+```javascript
+/**
+ * Calculate the total price including tax
+ * @param {number} price - The base price
+ * @param {number} taxRate - Tax rate (0-1)
+ * @returns {number} Total price with tax
+ * @example
+ * calculateTotalPrice(100, 0.1) // Returns 110
+ */
+function calculateTotalPrice(price, taxRate) {
+  return price * (1 + taxRate);
+}
+
+/**
+ * Fetch user data from API
+ * @param {string} userId - The user ID
+ * @returns {Promise<Object>} User data object
+ * @throws {Error} If user not found
+ */
+async function fetchUser(userId) {
+  const response = await fetch(`/api/users/${userId}`);
+  if (!response.ok) throw new Error('User not found');
+  return response.json();
+}
+```
+
+---
+
+### 4. Avoid Magic Numbers and Strings
+
+**Magic numbers/strings** adalah nilai literal yang muncul tanpa penjelasan:
+
+```javascript
+// BURUK - Magic numbers
+function calculateDiscount(price) {
+  if (price > 100) {
+    return price * 0.1;
+  }
+  return 0;
+}
+
+setTimeout(() => {
+  checkStatus();
+}, 5000);
+
+// BAIK - Named constants
+const DISCOUNT_THRESHOLD = 100;
+const DISCOUNT_RATE = 0.1;
+const STATUS_CHECK_INTERVAL = 5000; // 5 seconds
+
+function calculateDiscount(price) {
+  if (price > DISCOUNT_THRESHOLD) {
+    return price * DISCOUNT_RATE;
+  }
+  return 0;
+}
+
+setTimeout(() => {
+  checkStatus();
+}, STATUS_CHECK_INTERVAL);
+
+// BURUK - Magic strings
+if (user.role === 'admin') {
+  // ...
+}
+
+// BAIK - Named constants
+const USER_ROLES = {
+  ADMIN: 'admin',
+  USER: 'user',
+  GUEST: 'guest',
+};
+
+if (user.role === USER_ROLES.ADMIN) {
+  // ...
+}
+```
+
+---
+
+### 5. Proper Indentation and Formatting
+
+#### 5.1. Consistent Indentation
+
+```javascript
+// BAIK - Consistent 2 spaces (atau 4, yang penting konsisten)
+function example() {
+  if (condition) {
+    doSomething();
+    if (anotherCondition) {
+      doAnotherThing();
+    }
+  }
+}
+
+// BURUK - Inconsistent indentation
+function example() {
+  if (condition) {
+    doSomething();
+    if (anotherCondition) {
+      doAnotherThing();
+    }
+  }
+}
+```
+
+#### 5.2. Spacing and Line Breaks
+
+```javascript
+// BAIK - Spaced and readable
+function calculateTotal(items) {
+  let total = 0;
+
+  for (const item of items) {
+    total += item.price * item.quantity;
+  }
+
+  return total;
+}
+
+const user = {
+  name: 'Andi',
+  age: 25,
+  city: 'Jakarta',
+};
+
+// BURUK - Cramped
+function calculateTotal(items) {
+  let total = 0;
+  for (const item of items) {
+    total += item.price * item.quantity;
+  }
+  return total;
+}
+const user = { name: 'Andi', age: 25, city: 'Jakarta' };
+```
+
+#### 5.3. Line Length
+
+Batasi panjang baris ~80-120 karakter:
+
+```javascript
+// BURUK - Line terlalu panjang
+const message = `Hello ${user.name}, thank you for purchasing ${product.name}. Your order #${order.id} will be delivered to ${user.address.street}, ${user.address.city}, ${user.address.zipCode}`;
+
+// BAIK - Split jadi multiple lines
+const message =
+  `Hello ${user.name}, ` +
+  `thank you for purchasing ${product.name}. ` +
+  `Your order #${order.id} will be delivered to ` +
+  `${user.address.street}, ${user.address.city}, ${user.address.zipCode}`;
+
+// Atau lebih baik extract jadi function
+function formatDeliveryMessage(user, product, order) {
+  const greeting = `Hello ${user.name}`;
+  const thankYou = `thank you for purchasing ${product.name}`;
+  const delivery = `Your order #${order.id} will be delivered to ${formatAddress(user.address)}`;
+
+  return `${greeting}, ${thankYou}. ${delivery}`;
+}
+
+function formatAddress(address) {
+  return `${address.street}, ${address.city}, ${address.zipCode}`;
+}
+```
+
+---
+
+### 6. Performance Optimization Tips
+
+#### 6.1. Avoid Unnecessary Computations
+
+```javascript
+// BURUK - Compute di setiap iterasi
+for (let i = 0; i < array.length; i++) {
+  const total = calculateTotal(items); // Dihitung berulang!
+  console.log(array[i] * total);
+}
+
+// BAIK - Compute sekali
+const total = calculateTotal(items);
+for (let i = 0; i < array.length; i++) {
+  console.log(array[i] * total);
+}
+```
+
+#### 6.2. Cache Array Length
+
+```javascript
+// BAIK untuk array yang tidak berubah
+const length = array.length;
+for (let i = 0; i < length; i++) {
+  process(array[i]);
+}
+
+// Atau di dalam for initialization
+for (let i = 0, len = array.length; i < len; i++) {
+  process(array[i]);
+}
+```
+
+#### 6.3. Use const by Default
+
+`const` memberikan hint ke engine untuk optimasi:
+
+```javascript
+// BAIK - const by default
+const userName = 'Andi';
+const userAge = 25;
+const config = { theme: 'dark' };
+
+// Hanya gunakan let jika nilai akan berubah
+let counter = 0;
+for (let i = 0; i < 10; i++) {
+  counter += i;
+}
+```
+
+#### 6.4. Minimize DOM Manipulation
+
+```javascript
+// BURUK - Multiple DOM operations
+for (let i = 0; i < 100; i++) {
+  const item = document.createElement('li');
+  item.textContent = `Item ${i}`;
+  list.appendChild(item); // Repaint 100 kali!
+}
+
+// BAIK - Batch DOM operations
+const fragment = document.createDocumentFragment();
+for (let i = 0; i < 100; i++) {
+  const item = document.createElement('li');
+  item.textContent = `Item ${i}`;
+  fragment.appendChild(item);
+}
+list.appendChild(fragment); // Repaint 1 kali
+```
+
+#### 6.5. Debouncing dan Throttling (Pengenalan)
+
+**Debouncing** - Tunggu user selesai action sebelum execute:
+
+```javascript
+// Contoh: Search saat user mengetik
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func(...args), delay);
+  };
+}
+
+const searchInput = document.querySelector('#search');
+const debouncedSearch = debounce((query) => {
+  console.log('Searching for:', query);
+  // API call
+}, 300);
+
+searchInput.addEventListener('input', (e) => {
+  debouncedSearch(e.target.value);
+});
+```
+
+**Throttling** - Limit execution frequency:
+
+```javascript
+// Contoh: Scroll event
+function throttle(func, limit) {
+  let inThrottle;
+  return function (...args) {
+    if (!inThrottle) {
+      func(...args);
+      inThrottle = true;
+      setTimeout(() => (inThrottle = false), limit);
+    }
+  };
+}
+
+const handleScroll = throttle(() => {
+  console.log('Scrolled!');
+}, 100);
+
+window.addEventListener('scroll', handleScroll);
+```
+
+---
+
+### 7. Code Readability Principles
+
+#### 7.1. Positive Conditionals
+
+```javascript
+// BURUK - Double negative membingungkan
+if (!isNotValid) {
+  process();
+}
+
+// BAIK - Positive condition
+if (isValid) {
+  process();
+}
+
+// BURUK
+if (!user.isInactive) {
+  // ...
+}
+
+// BAIK
+if (user.isActive) {
+  // ...
+}
+```
+
+#### 7.2. Early Returns
+
+```javascript
+// BURUK - Deep nesting
+function processPayment(user, amount) {
+  if (user) {
+    if (user.isActive) {
+      if (amount > 0) {
+        if (user.balance >= amount) {
+          return chargeUser(user, amount);
+        } else {
+          throw new Error('Insufficient balance');
+        }
+      } else {
+        throw new Error('Invalid amount');
+      }
+    } else {
+      throw new Error('User not active');
+    }
+  } else {
+    throw new Error('User not found');
+  }
+}
+
+// BAIK - Early returns, guard clauses
+function processPayment(user, amount) {
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  if (!user.isActive) {
+    throw new Error('User not active');
+  }
+
+  if (amount <= 0) {
+    throw new Error('Invalid amount');
+  }
+
+  if (user.balance < amount) {
+    throw new Error('Insufficient balance');
+  }
+
+  return chargeUser(user, amount);
+}
+```
+
+#### 7.3. Descriptive Conditions
+
+```javascript
+// BURUK - Inline complex conditions
+if (user.age >= 18 && user.hasLicense && !user.suspended && user.experience >= 2) {
+  allowDriving();
+}
+
+// BAIK - Extract ke variables
+const isAdult = user.age >= 18;
+const hasValidLicense = user.hasLicense && !user.suspended;
+const hasEnoughExperience = user.experience >= 2;
+const canDrive = isAdult && hasValidLicense && hasEnoughExperience;
+
+if (canDrive) {
+  allowDriving();
+}
+
+// Atau extract ke function
+function canUserDrive(user) {
+  return user.age >= 18 && user.hasLicense && !user.suspended && user.experience >= 2;
+}
+
+if (canUserDrive(user)) {
+  allowDriving();
+}
+```
+
+---
+
+### 8. Common Pitfalls dan Cara Menghindarinya
+
+#### 8.1. Avoiding Global Variables
+
+```javascript
+// BURUK - Global pollution
+var userName = 'Andi';
+var userAge = 25;
+
+function updateUser() {
+  userName = 'Budi'; // Mengubah global
+}
+
+// BAIK - Module pattern atau IIFE
+(function () {
+  let userName = 'Andi';
+  let userAge = 25;
+
+  function updateUser() {
+    userName = 'Budi'; // Local to IIFE
+  }
+})();
+
+// ATAU gunakan modules (ES6)
+// user.js
+export const userName = 'Andi';
+export const userAge = 25;
+```
+
+#### 8.2. Avoiding var
+
+```javascript
+// BURUK - var tidak block-scoped
+for (var i = 0; i < 5; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Output: 5, 5, 5, 5, 5
+
+// BAIK - let adalah block-scoped
+for (let i = 0; i < 5; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Output: 0, 1, 2, 3, 4
+```
+
+#### 8.3. Avoiding Truthy/Falsy Gotchas
+
+```javascript
+// HATI-HATI dengan truthy/falsy
+const count = 0;
+if (count) {
+  // false karena 0 adalah falsy
+  console.log('Has items');
+}
+
+// BAIK - Explicit check
+if (count > 0) {
+  console.log('Has items');
+}
+
+// ATAU gunakan nullish coalescing untuk default values
+const displayCount = count ?? 'No items'; // 0 (bukan 'No items')
+const displayCount2 = count || 'No items'; // 'No items' (karena 0 falsy)
+```
+
+#### 8.4. Comparing with === Instead of ==
+
+```javascript
+// BURUK - Type coercion membingungkan
+console.log(0 == false); // true
+console.log('' == false); // true
+console.log('0' == 0); // true
+console.log(null == undefined); // true
+
+// BAIK - Strict equality
+console.log(0 === false); // false
+console.log('' === false); // false
+console.log('0' === 0); // false
+console.log(null === undefined); // false
+```
+
+---
+
+## Praktik
+
+### Latihan 1: Refactor Naming
+
+**Tingkat**: Dasar
+
+**Tujuan**: Memperbaiki naming conventions
+
+**Instruksi**:
+Refactor kode berikut dengan naming yang lebih baik:
+
+```javascript
+const u = {
+  n: 'Andi',
+  a: 25,
+  act: true,
+};
+
+function calc(p, q) {
+  return p * q * 0.1;
+}
+
+const x = calc(u.a, 5);
+```
+
+### Latihan 2: Extract Functions
+
+**Tingkat**: Menengah
+
+**Tujuan**: Memecah fungsi besar jadi fungsi-fungsi kecil
+
+**Instruksi**:
+Refactor fungsi berikut mengikuti Single Responsibility Principle:
+
+```javascript
+function checkout(cart, user) {
+  // Validate cart
+  if (cart.length === 0) throw new Error('Cart empty');
+
+  // Calculate total
+  let total = 0;
+  for (let item of cart) {
+    total += item.price * item.qty;
+  }
+
+  // Apply discount
+  if (user.isPremium) {
+    total *= 0.9;
+  }
+
+  // Check balance
+  if (user.balance < total) {
+    throw new Error('Insufficient balance');
+  }
+
+  // Charge user
+  user.balance -= total;
+
+  // Create order
+  const order = {
+    id: Date.now(),
+    items: cart,
+    total: total,
+    user: user.id,
+  };
+
+  // Clear cart
+  cart.length = 0;
+
+  // Send email
+  console.log(`Email sent to ${user.email}`);
+
+  return order;
+}
+```
+
+### Latihan 3: Remove Magic Numbers
+
+**Tingkat**: Dasar
+
+**Tujuan**: Replace magic numbers dengan named constants
+
+**Instruksi**:
+Refactor kode berikut:
+
+```javascript
+function calculateShipping(weight, distance) {
+  if (weight > 5) {
+    return distance * 2000;
+  } else if (weight > 2) {
+    return distance * 1500;
+  } else {
+    return distance * 1000;
+  }
+}
+
+function isEligibleForFreeShipping(total) {
+  return total > 100000;
+}
+```
+
+### Latihan 4: Improve Readability
+
+**Tingkat**: Menengah
+
+**Tujuan**: Meningkatkan readability dengan early returns dan extracted conditions
+
+**Instruksi**:
+Refactor dengan early returns dan descriptive variables:
+
+```javascript
+function canAccessResource(user, resource) {
+  if (user) {
+    if (user.isActive) {
+      if (resource.isPublic || user.role === 'admin' || resource.ownerId === user.id) {
+        if (!resource.isDeleted) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+```
+
+### Latihan 5: Add Proper Comments
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menambahkan comments yang meaningful
+
+**Instruksi**:
+Tambahkan JSDoc dan comments yang tepat:
+
+```javascript
+function calculateLoan(amount, years, rate) {
+  const monthlyRate = rate / 12 / 100;
+  const months = years * 12;
+  const payment =
+    (amount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+    (Math.pow(1 + monthlyRate, months) - 1);
+  return Math.round(payment * 100) / 100;
+}
+```
+
+### Tantangan: Complete Code Review
+
+**Tingkat**: Lanjutan
+
+**Tujuan**: Menerapkan semua clean code principles
+
+**Instruksi**:
+Refactor kode berikut dengan menerapkan SEMUA principles yang dipelajari:
+
+```javascript
+var u = { n: 'Andi', e: 'andi@mail.com', a: 25, b: 1000000 };
+var p = [
+  { id: 1, n: 'Laptop', p: 10000000, s: 5 },
+  { id: 2, n: 'Mouse', p: 150000, s: 10 },
+];
+
+function buy(pid, q) {
+  for (var i = 0; i < p.length; i++) {
+    if (p[i].id == pid) {
+      if (p[i].s >= q) {
+        var t = p[i].p * q;
+        if (u.a >= 18) {
+          if (t > 500000) {
+            t = t * 0.9;
+          }
+        }
+        if (u.b >= t) {
+          u.b = u.b - t;
+          p[i].s = p[i].s - q;
+          console.log('OK');
+          return { s: true, t: t, b: u.b };
+        } else {
+          console.log('Not enough money');
+          return { s: false };
+        }
+      } else {
+        console.log('Out of stock');
+        return { s: false };
+      }
+    }
+  }
+  console.log('Product not found');
+  return { s: false };
+}
+```
+
+Requirements:
+
+- Proper naming (camelCase, descriptive)
+- Extract functions (Single Responsibility)
+- Remove magic numbers
+- Early returns
+- Descriptive conditions
+- Add JSDoc
+- Use const/let instead of var
+- Strict equality
+- Comments where needed
+
+---
+
+## Rangkuman Sesi 7
+
+Selamat! Anda telah menyelesaikan seluruh materi JavaScript dasar dengan clean code practices:
+
+- **Naming Conventions** - camelCase, PascalCase, UPPER_CASE yang tepat
+- **Code Organization** - Single Responsibility, DRY, KISS
+- **Comments** - Comment "why" not "what", self-documenting code
+- **Avoid Magic Numbers** - Named constants untuk readability
+- **Formatting** - Consistent indentation dan spacing
+- **Performance Tips** - Cache, const by default, debouncing
+- **Readability** - Positive conditionals, early returns, descriptive names
+- **Common Pitfalls** - Avoid var, globals, type coercion issues
+
+---
+
+## Arah Pembelajaran Selanjutnya
+
+Anda telah memiliki fondasi JavaScript yang kuat! Berikut peta jalan pembelajaran selanjutnya:
+
+### JavaScript Intermediate
+
+- **OOP (Object-Oriented Programming)** - Class, inheritance, encapsulation
+- **Modules** - Import/export, module bundlers
+- **Async JavaScript** - Promises, async/await, error handling
+- **DOM Manipulation** - Event handling, element manipulation
+- **Web APIs** - Fetch, LocalStorage, Geolocation
+
+### JavaScript Advanced
+
+- **Design Patterns** - Module, Factory, Observer, Singleton
+- **Functional Programming** - Higher-order functions, composition
+- **Testing** - Jest, unit testing, integration testing
+- **Build Tools** - Webpack, Vite, npm scripts
+
+### Framework & Libraries
+
+- **React** - Component-based UI development
+- **Vue** atau **Svelte** - Alternative frameworks
+- **Node.js** - Backend JavaScript
+- **TypeScript** - Type-safe JavaScript
+
+Terus berlatih dan jangan takut untuk bereksperimen. Happy coding!

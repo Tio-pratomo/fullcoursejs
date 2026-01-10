@@ -10,94 +10,166 @@ Di sesi sebelumnya, kita telah belajar cara menyimpan data dalam variabel. Sekar
 
 ---
 
-## 1. Operator Aritmatika dan Penugasan
+## Materi: Pengetahuan & Konsep
+
+### 1. Operator Aritmatika dan Penugasan
 
 Ini adalah operator yang paling umum dan digunakan untuk melakukan operasi matematika dasar.
 
-### 1.1. Operator Aritmatika
+#### 1.1. Operator Aritmatika
 
-| Operator | Fungsi                 | Contoh            |
-| :------- | :--------------------- | :---------------- |
-| `+`      | Penjumlahan            | `10 + 5` ⟶ `15`   |
-| `-`      | Pengurangan            | `10 - 5` ⟶ `5`    |
-| `*`      | Perkalian              | `10 * 5` ⟶ `50`   |
-| `**`     | Eksponensial (pangkat) | `10 ** 2` ⟶ `100` |
-| `/`      | Pembagian              | `10 / 5` ⟶ `2`    |
-| `%`      | Sisa Bagi (Modulo)     | `10 % 3` ⟶ `1`    |
+| Operator | Fungsi                 | Contoh    | Hasil |
+| :------- | :--------------------- | :-------- | :---- |
+| `+`      | Penjumlahan            | `10 + 5`  | `15`  |
+| `-`      | Pengurangan            | `10 - 5`  | `5`   |
+| `*`      | Perkalian              | `10 * 5`  | `50`  |
+| `**`     | Eksponensial (pangkat) | `10 ** 2` | `100` |
+| `/`      | Pembagian              | `10 / 5`  | `2`   |
+| `%`      | Sisa Bagi (Modulo)     | `10 % 3`  | `1`   |
 
-### 1.2. Operator Augmented Assignments
+```javascript
+// Contoh penggunaan
+const a = 10;
+const b = 3;
+
+console.log(a + b); // 13
+console.log(a - b); // 7
+console.log(a * b); // 30
+console.log(a / b); // 3.3333...
+console.log(a % b); // 1 (sisa dari 10 dibagi 3)
+console.log(a ** b); // 1000 (10 pangkat 3)
+```
+
+**Penggunaan Modulo dalam Praktik:**
+
+```javascript
+// Cek apakah angka genap atau ganjil
+const angka = 7;
+if (angka % 2 === 0) {
+  console.log('Genap');
+} else {
+  console.log('Ganjil'); // Output ini yang muncul
+}
+
+// Ambil digit terakhir dari sebuah angka
+const nomor = 12345;
+const digitTerakhir = nomor % 10;
+console.log(digitTerakhir); // 5
+```
+
+#### 1.2. Operator Augmented Assignments
 
 Ini adalah cara singkat untuk melakukan operasi aritmatika pada variabel itu sendiri.
 
-| Operator | Ekuivalen dengan       |
-| :------- | :--------------------- |
-| `+=`     | `result = result + x`  |
-| `-=`     | `result = result - x`  |
-| `*=`     | `result = result * x`  |
-| `**=`    | `result = result ** x` |
-| `/=`     | `result = result / x`  |
-| `%=`     | `result = result % x`  |
+| Operator | Ekuivalen dengan       | Contoh         |
+| :------- | :--------------------- | :------------- |
+| `+=`     | `result = result + x`  | `result += 5`  |
+| `-=`     | `result = result - x`  | `result -= 3`  |
+| `*=`     | `result = result * x`  | `result *= 2`  |
+| `**=`    | `result = result ** x` | `result **= 3` |
+| `/=`     | `result = result / x`  | `result /= 4`  |
+| `%=`     | `result = result % x`  | `result %= 2`  |
 
 ```javascript
 let result = 10;
-result += 5; // sekarang result menjadi 15
+
+result += 5; // result sekarang 15 (sama dengan: result = result + 5)
+console.log(result);
+
+result *= 2; // result sekarang 30 (sama dengan: result = result * 2)
+console.log(result);
+
+result -= 10; // result sekarang 20
 console.log(result);
 ```
 
-### 1.3. Operator Unary
+#### 1.3. Operator Unary
 
 Operator ini bekerja pada satu nilai. Yang paling umum adalah `++` (increment) untuk menaikkan nilai sebesar 1, dan `--` (decrement) untuk menurunkannya sebesar 1.
 
 ```javascript
 let counter = 5;
-counter++; // counter sekarang menjadi 6
+
+counter++; // counter sekarang menjadi 6 (post-increment)
 console.log(counter);
 
-counter--; // counter kembali menjadi 5
+counter--; // counter kembali menjadi 5 (post-decrement)
 console.log(counter);
+
+// Pre-increment vs Post-increment
+let x = 5;
+console.log(x++); // Output: 5 (gunakan dulu, baru tambah)
+console.log(x); // Output: 6
+
+let y = 5;
+console.log(++y); // Output: 6 (tambah dulu, baru gunakan)
+console.log(y); // Output: 6
+```
+
+**Perbedaan Pre dan Post Increment:**
+
+```javascript
+// Post-increment (nilai++)
+let a = 10;
+let b = a++; // b = 10, lalu a menjadi 11
+console.log(b); // 10
+console.log(a); // 11
+
+// Pre-increment (++nilai)
+let c = 10;
+let d = ++c; // c menjadi 11 dulu, lalu d = 11
+console.log(d); // 11
+console.log(c); // 11
 ```
 
 ---
 
-## 2. Operator Perbandingan dan Logika
+### 2. Operator Perbandingan
 
 Operator ini sangat krusial untuk membuat keputusan dalam kode. Hasil dari operasinya selalu berupa nilai boolean (`true` atau `false`).
 
-### 2.1. Operator Perbandingan
+| Operator | Keterangan                                     | Contoh        | Hasil   |
+| :------- | :--------------------------------------------- | :------------ | :------ |
+| `>`      | Lebih dari                                     | `10 > 5`      | `true`  |
+| `<`      | Kurang dari                                    | `10 < 5`      | `false` |
+| `>=`     | Lebih dari atau sama dengan                    | `10 >= 10`    | `true`  |
+| `<=`     | Kurang dari atau sama dengan                   | `5 <= 10`     | `true`  |
+| `==`     | Sama dengan (hanya membandingkan nilai)        | `10 == '10'`  | `true`  |
+| `===`    | Sama dengan dan sama tipe (perbandingan ketat) | `10 === '10'` | `false` |
+| `!=`     | Tidak sama dengan                              | `10 != 5`     | `true`  |
+| `!==`    | Tidak sama dengan atau tidak sama tipe         | `10 !== '10'` | `true`  |
 
-| Operator | Keterangan                                     |
-| :------- | :--------------------------------------------- |
-| `>`      | Lebih dari                                     |
-| `<`      | Kurang dari                                    |
-| `>=`     | Lebih dari atau sama dengan                    |
-| `<=`     | Kurang dari atau sama dengan                   |
-| `==`     | Sama dengan (hanya membandingkan nilai)        |
-| `===`    | Sama dengan dan sama tipe (perbandingan ketat) |
-| `!=`     | Tidak sama dengan                              |
-| `!==`    | Tidak sama dengan atau tidak sama tipe         |
-
-<Aside title="Catatan" icon="open-book">
-
-Selalu Gunakan `===` daripada `==`
-
-Selalu utamakan penggunaan `===` dan `!==` . Karena lebih aman dan ketat. Operator `==` dapat menyebabkan hasil yang tidak terduga karena ia mencoba melakukan konversi tipe data secara otomatis.
-
-</Aside>
-
-Perhatikan perbedaan ini:
+**Perbedaan Penting: == vs ===**
 
 ```javascript
-console.log(10 == '10'); // Output: true (nilai dianggap sama)
-console.log(10 === '10'); // Output: false (nilai sama, tapi tipe data berbeda!)
+// Operator == melakukan type coercion (konversi tipe)
+console.log(10 == '10'); // true (string '10' dikonversi ke number 10)
+console.log(0 == false); // true (false dikonversi ke 0)
+console.log('' == false); // true (string kosong dikonversi ke false)
+console.log(null == undefined); // true
+
+// Operator === TIDAK melakukan type coercion
+console.log(10 === '10'); // false (tipe berbeda: number vs string)
+console.log(0 === false); // false (tipe berbeda: number vs boolean)
+console.log('' === false); // false (tipe berbeda: string vs boolean)
+console.log(null === undefined); // false (tipe berbeda)
 ```
 
-### 2.2. Operator Logika
+**Best Practice:** Selalu gunakan `===` dan `!==` untuk menghindari bug yang sulit dilacak akibat type coercion.
+
+---
+
+### 3. Operator Logika
 
 Digunakan untuk menggabungkan beberapa ekspresi boolean.
 
-- **`&&` (DAN)**: Menghasilkan `true` hanya jika **kedua** kondisi bernilai `true`.
-- **`||` (ATAU)**: Menghasilkan `true` jika **salah satu** kondisi bernilai `true`.
-- **`!` (TIDAK/KEBALIKAN)**: Membalikkan nilai boolean (`true` menjadi `false`, dan sebaliknya).
+#### 3.1. Operator Logika Dasar
+
+| Operator | Nama        | Keterangan                             |
+| :------- | :---------- | :------------------------------------- |
+| `&&`     | AND (DAN)   | `true` hanya jika SEMUA kondisi `true` |
+| `\|\|`   | OR (ATAU)   | `true` jika SALAH SATU kondisi `true`  |
+| `!`      | NOT (TIDAK) | Membalikkan nilai boolean              |
 
 ```javascript
 const nilaiUjian = 85;
@@ -106,78 +178,579 @@ const kehadiran = 90;
 const lulusUjian = nilaiUjian > 75; // true
 const kehadiranCukup = kehadiran > 80; // true
 
-const berhakLulus = lulusUjian && kehadiranCukup; // true && true
+const berhakLulus = lulusUjian && kehadiranCukup; // true && true = true
+console.log('Berhak lulus: ' + berhakLulus);
 
-console.log('Berhak lulus: ' + berhakLulus); // Output: Berhak lulus: true
+// Operator NOT (!)
+const tidakLulus = !berhakLulus; // !true = false
+console.log('Tidak lulus: ' + tidakLulus);
+```
+
+**Tabel Kebenaran AND (&&):**
+
+| A     | B     | A && B |
+| :---- | :---- | :----- |
+| true  | true  | true   |
+| true  | false | false  |
+| false | true  | false  |
+| false | false | false  |
+
+**Tabel Kebenaran OR (||):**
+
+| A     | B     | A \|\| B |
+| :---- | :---- | :------- |
+| true  | true  | true     |
+| true  | false | true     |
+| false | true  | true     |
+| false | false | false    |
+
+#### 3.2. Short-Circuit Evaluation
+
+JavaScript menggunakan teknik "short-circuit" saat mengevaluasi operator logika - ia akan berhenti begitu hasilnya sudah pasti.
+
+**Short-Circuit dengan AND (&&):**
+
+```javascript
+// Jika kondisi pertama false, kondisi kedua TIDAK dievaluasi
+let nilai = 50;
+let hasil = nilai > 70 && console.log('Lulus!');
+// Karena nilai > 70 adalah false, console.log tidak dijalankan
+
+// Jika kondisi pertama true, kondisi kedua dievaluasi
+nilai = 80;
+hasil = nilai > 70 && console.log('Lulus!'); // Output: "Lulus!"
+```
+
+**Short-Circuit dengan OR (||):**
+
+```javascript
+// Jika kondisi pertama true, kondisi kedua TIDAK dievaluasi
+let nama = 'Andi';
+let tampilan = nama || 'Guest';
+console.log(tampilan); // "Andi"
+
+// Jika kondisi pertama false, kondisi kedua dievaluasi
+nama = '';
+tampilan = nama || 'Guest';
+console.log(tampilan); // "Guest" (karena string kosong adalah falsy)
+```
+
+**Penggunaan Praktis - Default Values:**
+
+```javascript
+function sapa(nama) {
+  // Jika nama tidak diberikan atau falsy, gunakan 'Tamu'
+  const namaFinal = nama || 'Tamu';
+  console.log(`Halo, ${namaFinal}!`);
+}
+
+sapa('Budi'); // "Halo, Budi!"
+sapa(); // "Halo, Tamu!"
+sapa(''); // "Halo, Tamu!"
+```
+
+#### 3.3. Operator Nullish Coalescing (??)
+
+Operator `??` mirip dengan `||`, tetapi hanya menganggap `null` dan `undefined` sebagai "tidak ada nilai" [3]. Ini lebih presisi untuk memberikan default value.
+
+```javascript
+// Dengan OR (||) - bisa bermasalah
+const nilai1 = 0 || 100;
+console.log(nilai1); // 100 (karena 0 adalah falsy)
+
+const nilai2 = '' || 'default';
+console.log(nilai2); // "default" (karena '' adalah falsy)
+
+// Dengan Nullish Coalescing (??) - lebih tepat
+const nilai3 = 0 ?? 100;
+console.log(nilai3); // 0 (karena 0 bukan null/undefined)
+
+const nilai4 = '' ?? 'default';
+console.log(nilai4); // "" (karena '' bukan null/undefined)
+
+const nilai5 = null ?? 'default';
+console.log(nilai5); // "default" (karena null)
+
+const nilai6 = undefined ?? 'default';
+console.log(nilai6); // "default" (karena undefined)
+```
+
+**Kapan Menggunakan ?? vs ||:**
+
+```javascript
+// Gunakan ?? saat nilai 0, false, atau '' adalah nilai yang valid
+function tampilkanSkor(skor) {
+  // BURUK: menggunakan ||
+  const tampilan1 = skor || 'Belum ada skor';
+  console.log(tampilan1); // Jika skor = 0, akan tampil "Belum ada skor" (SALAH!)
+
+  // BAIK: menggunakan ??
+  const tampilan2 = skor ?? 'Belum ada skor';
+  console.log(tampilan2); // Jika skor = 0, akan tampil 0 (BENAR!)
+}
+
+tampilkanSkor(0); // Dengan ??: Output 0
+tampilkanSkor(undefined); // Dengan ??: Output "Belum ada skor"
 ```
 
 ---
 
-## 3. Konversi Tipe Data
+### 4. Operator Ternary
+
+Operator ternary adalah cara singkat untuk menulis statement `if-else` sederhana. Sintaksnya: `kondisi ? nilaiJikaTrue : nilaiJikaFalse`
+
+```javascript
+// Cara tradisional dengan if-else
+let umur = 20;
+let status;
+
+if (umur >= 18) {
+  status = 'Dewasa';
+} else {
+  status = 'Anak-anak';
+}
+
+// Cara singkat dengan ternary
+const status2 = umur >= 18 ? 'Dewasa' : 'Anak-anak';
+console.log(status2); // "Dewasa"
+```
+
+**Contoh Penggunaan Praktis:**
+
+```javascript
+// Menentukan harga tiket berdasarkan umur
+const umur = 15;
+const hargaTiket = umur < 12 ? 5000 : umur >= 60 ? 7000 : 10000;
+console.log(`Harga tiket: Rp${hargaTiket}`); // Rp10000
+
+// Menampilkan pesan status login
+const isLoggedIn = true;
+console.log(isLoggedIn ? 'Selamat datang!' : 'Silakan login');
+
+// Inline conditional rendering
+const jumlahPesan = 3;
+const teks = `Anda memiliki ${jumlahPesan} ${jumlahPesan === 1 ? 'pesan' : 'pesan-pesan'}`;
+console.log(teks); // "Anda memiliki 3 pesan-pesan"
+```
+
+**Peringatan: Hindari Nested Ternary yang Kompleks**
+
+```javascript
+// BURUK: Sulit dibaca
+const nilai = 85;
+const grade = nilai >= 90 ? 'A' : nilai >= 80 ? 'B' : nilai >= 70 ? 'C' : 'D';
+
+// BAIK: Gunakan if-else untuk logika kompleks
+let grade2;
+if (nilai >= 90) {
+  grade2 = 'A';
+} else if (nilai >= 80) {
+  grade2 = 'B';
+} else if (nilai >= 70) {
+  grade2 = 'C';
+} else {
+  grade2 = 'D';
+}
+```
+
+---
+
+### 5. Konversi Tipe Data
 
 Terkadang, kita perlu mengubah tipe data dari satu bentuk ke bentuk lain. Kasus paling umum adalah saat menerima input dari pengguna, yang biasanya selalu dalam bentuk `String`.
+
+#### 5.1. String ke Number
 
 ```javascript
 const value1 = '10'; // ini adalah string
 const value2 = 5; // ini adalah number
 
-const hasil = value1 + value2;
-console.log(hasil); // Output: "105" (bukan 15!)
+// Masalah: operator + akan melakukan concatenation
+const hasilSalah = value1 + value2;
+console.log(hasilSalah); // "105" (bukan 15!)
+console.log(typeof hasilSalah); // "string"
+
+// Solusi: konversi string ke number
+const hasilBenar = Number(value1) + value2;
+console.log(hasilBenar); // 15
+console.log(typeof hasilBenar); // "number"
 ```
 
-Untuk mengatasi ini, kita bisa melakukan konversi (sering disebut _parsing_):
-
-- **`parseInt(string)`**: Mengubah string menjadi bilangan bulat (integer).
-- **`parseFloat(string)`**: Mengubah string menjadi bilangan desimal (pecahan).
-- **`Number(string)`**: Mengubah string menjadi number (bisa bulat atau desimal). Ini lebih ketat; jika ada karakter selain angka (kecuali titik desimal), hasilnya bisa `NaN` (Not a Number).
+**Metode Konversi String ke Number:**
 
 ```javascript
-const value1 = '10.5';
-const value2 = 5;
+const strAngka = '123';
+const strDesimal = '12.5';
+const strInvalid = '123abc';
 
-const hasil = parseInt(value1) + value2; // parseInt akan mengambil bagian bulat saja
-console.log(hasil); // Output: 15 (karena 10 + 5)
+// 1. Number() - konversi umum
+console.log(Number(strAngka)); // 123
+console.log(Number(strDesimal)); // 12.5
+console.log(Number(strInvalid)); // NaN (Not a Number)
+console.log(Number('')); // 0
+console.log(Number('  42  ')); // 42 (whitespace diabaikan)
 
-const hasilFloat = parseFloat(value1) + value2;
-console.log(hasilFloat); // Output: 15.5 (karena 10.5 + 5)
+// 2. parseInt() - konversi ke integer
+console.log(parseInt(strAngka)); // 123
+console.log(parseInt(strDesimal)); // 12 (bagian desimal dibuang)
+console.log(parseInt(strInvalid)); // 123 (berhenti di karakter non-angka)
+console.log(parseInt('   42  ')); // 42
+
+// 3. parseFloat() - konversi ke floating-point
+console.log(parseFloat(strDesimal)); // 12.5
+console.log(parseFloat('3.14.159')); // 3.14 (berhenti di titik kedua)
+
+// 4. Unary plus (+) - cara cepat
+console.log(+strAngka); // 123
+console.log(+'12.5'); // 12.5
+```
+
+**Kapan Menggunakan Yang Mana:**
+
+| Metode         | Gunakan Saat                                                |
+| :------------- | :---------------------------------------------------------- |
+| `Number()`     | Ingin konversi lengkap, error jika ada karakter non-angka   |
+| `parseInt()`   | Ingin hanya bagian integer, mengabaikan karakter setelahnya |
+| `parseFloat()` | Ingin bilangan desimal                                      |
+| Unary `+`      | Shorthand cepat untuk `Number()`                            |
+
+#### 5.2. Number ke String
+
+```javascript
+const angka = 123;
+
+// 1. String() - cara eksplisit
+const str1 = String(angka);
+console.log(str1); // "123"
+console.log(typeof str1); // "string"
+
+// 2. .toString() - method
+const str2 = angka.toString();
+console.log(str2); // "123"
+
+// 3. Template literal - cara modern
+const str3 = `${angka}`;
+console.log(str3); // "123"
+
+// 4. Concatenation dengan string kosong - cara cepat (tapi kurang jelas)
+const str4 = angka + '';
+console.log(str4); // "123"
+```
+
+#### 5.3. Ke Boolean
+
+```javascript
+// Nilai falsy (akan menjadi false)
+console.log(Boolean(0)); // false
+console.log(Boolean('')); // false
+console.log(Boolean(null)); // false
+console.log(Boolean(undefined)); // false
+console.log(Boolean(NaN)); // false
+
+// Semua nilai lainnya adalah truthy (akan menjadi true)
+console.log(Boolean(1)); // true
+console.log(Boolean('hello')); // true
+console.log(Boolean(' ')); // true (spasi adalah truthy!)
+console.log(Boolean([])); // true (array kosong adalah truthy!)
+console.log(Boolean({})); // true (object kosong adalah truthy!)
+
+// Double NOT (!!) - shorthand untuk Boolean()
+console.log(!!'hello'); // true
+console.log(!!0); // false
 ```
 
 ---
 
-## 4. String Template
+### 6. String Template (Template Literals)
 
-Ini adalah cara modern dan lebih mudah untuk membuat string, terutama jika kita perlu memasukkan nilai dari variabel ke dalamnya. Alih-alih menggunakan operator `+` untuk menggabungkan string, kita menggunakan karakter _backtick_ (` `` `) dan sintaks `${...}`.
+Ini adalah cara modern dan lebih mudah untuk membuat string, terutama jika kita perlu memasukkan nilai dari variabel ke dalamnya. Alih-alih menggunakan operator `+` untuk menggabungkan string, kita menggunakan karakter backtick (`` ` ``) dan sintaks `${...}`.
 
-**Cara Lama (dengan `+`):**
-
-```javascript
-const nama = 'Mamat';
-const nilai = 90;
-const kalimat = 'Halo ' + nama + ', nilai Anda adalah ' + nilai + '.';
-// Output: Halo Mamat, nilai Anda adalah 90.
-```
-
-**Cara Modern (dengan String Template):**
+**Cara Lama (String Concatenation):**
 
 ```javascript
 const nama = 'Mamat';
 const nilai = 90;
-const kalimat = `Halo ${nama}, nilai Anda adalah ${nilai}.`;
-// Output: Halo Mamat, nilai Anda adalah 90.
+const kelas = 'A';
+
+const kalimat = 'Halo ' + nama + ', nilai Anda adalah ' + nilai + ' di kelas ' + kelas + '.';
+console.log(kalimat);
+// Output: Halo Mamat, nilai Anda adalah 90 di kelas A.
 ```
 
-Keunggulan utamanya adalah kode menjadi jauh lebih bersih dan mudah dibaca.
+**Cara Modern (Template Literal):**
+
+```javascript
+const nama = 'Mamat';
+const nilai = 90;
+const kelas = 'A';
+
+const kalimat = `Halo ${nama}, nilai Anda adalah ${nilai} di kelas ${kelas}.`;
+console.log(kalimat);
+// Output: Halo Mamat, nilai Anda adalah 90 di kelas A.
+```
+
+**Keunggulan Template Literal:**
+
+```javascript
+// 1. Multi-line strings
+const alamat = `
+  Jalan Merdeka No. 123
+  Jakarta Pusat
+  Indonesia
+`;
+console.log(alamat);
+
+// 2. Ekspresi di dalam ${}
+const a = 10;
+const b = 20;
+console.log(`Hasil penjumlahan: ${a + b}`); // "Hasil penjumlahan: 30"
+console.log(`Apakah ${a} > ${b}? ${a > b}`); // "Apakah 10 > 20? false"
+
+// 3. Pemanggilan fungsi di dalam ${}
+function hitungDiskon(harga) {
+  return harga * 0.1;
+}
+
+const hargaBarang = 100000;
+console.log(`Harga: Rp${hargaBarang}, Diskon: Rp${hitungDiskon(hargaBarang)}`);
+// Output: Harga: Rp100000, Diskon: Rp10000
+
+// 4. Nested template literals
+const nama = 'Budi';
+const umur = 25;
+const status = `Nama: ${nama}, Status: ${umur >= 18 ? 'Dewasa' : 'Anak-anak'}`;
+console.log(status); // "Nama: Budi, Status: Dewasa"
+```
+
+---
+
+### 7. Operator Precedence (Urutan Prioritas)
+
+Sama seperti matematika, JavaScript memiliki urutan prioritas operator. Operator dengan prioritas lebih tinggi akan dieksekusi terlebih dahulu.
+
+```javascript
+// Contoh tanpa tanda kurung
+const hasil1 = 5 + 3 * 2;
+console.log(hasil1); // 11 (bukan 16, karena * lebih prioritas dari +)
+
+// Dengan tanda kurung untuk mengubah urutan
+const hasil2 = (5 + 3) * 2;
+console.log(hasil2); // 16
+
+// Contoh dengan operator logika
+const x = 5;
+const hasil3 = (x > 3 && x < 10) || x === 15;
+console.log(hasil3); // true (AND lebih prioritas dari OR)
+```
+
+**Urutan Prioritas (dari tertinggi ke terendah):**
+
+1. Tanda kurung `()`
+2. Unary operators (`++`, `--`, `!`, unary `+`, unary `-`)
+3. Eksponensial `**`
+4. Perkalian, pembagian, modulo (`*`, `/`, `%`)
+5. Penjumlahan, pengurangan (`+`, `-`)
+6. Perbandingan (`<`, `>`, `<=`, `>=`)
+7. Equality (`==`, `===`, `!=`, `!==`)
+8. Logical AND (`&&`)
+9. Logical OR (`||`)
+10. Nullish coalescing (`??`)
+11. Ternary (`? :`)
+12. Assignment (`=`, `+=`, `-=`, dll)
+
+**Best Practice:** Gunakan tanda kurung untuk memperjelas maksud, meskipun tidak wajib.
+
+---
+
+## Praktik
+
+### Latihan 1: Kalkulator Dasar
+
+**Tingkat**: Dasar
+
+**Tujuan**: Memahami operator aritmatika dan augmented assignment
+
+**Instruksi**:
+
+1. Buat variabel `angka1` dengan nilai 15 dan `angka2` dengan nilai 4
+2. Hitung dan tampilkan hasil dari semua operasi aritmatika (+, -, \*, /, %, \*\*)
+3. Buat variabel `total` dengan nilai 100
+4. Gunakan augmented assignment untuk: kurangi 20, kalikan 2, bagi 4
+5. Tampilkan hasil akhir dengan template literal
+
+### Latihan 2: Perbandingan dan Tipe Data
+
+**Tingkat**: Dasar
+
+**Tujuan**: Memahami perbedaan `==` vs `===`
+
+**Instruksi**:
+Prediksi output dari kode berikut, kemudian jalankan untuk verifikasi:
+
+```javascript
+console.log(5 == '5');
+console.log(5 === '5');
+console.log(0 == false);
+console.log(0 === false);
+console.log(null == undefined);
+console.log(null === undefined);
+console.log('' == 0);
+console.log('' === 0);
+```
+
+### Latihan 3: Operator Logika dan Short-Circuit
+
+**Tingkat**: Menengah
+
+**Tujuan**: Memahami operator logika dan short-circuit evaluation
+
+**Instruksi**:
+Buat program yang mengecek kelayakan seseorang mendapatkan beasiswa dengan kriteria:
+
+- IPK minimal 3.5 DAN
+- Penghasilan orang tua maksimal 5 juta ATAU memiliki saudara kandung minimal 3
+
+Gunakan operator logika untuk implementasi dan tampilkan hasilnya.
+
+### Latihan 4: Ternary Operator
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menggunakan ternary operator dengan tepat
+
+**Instruksi**:
+Buat program penentuan kategori usia menggunakan ternary operator:
+
+- 0-12 tahun: Anak-anak
+- 13-17 tahun: Remaja
+- 18-60 tahun: Dewasa
+- > 60 tahun: Lansia
+
+Tampilkan hasilnya dengan format: "Usia [X] tahun termasuk kategori [Y]"
+
+### Latihan 5: Nullish Coalescing
+
+**Tingkat**: Menengah
+
+**Tujuan**: Memahami perbedaan `||` vs `??`
+
+**Instruksi**:
+Buat fungsi yang menerima parameter `skor` dan menampilkan:
+
+- Gunakan `||`: Apa yang terjadi jika skor = 0?
+- Gunakan `??`: Apa yang terjadi jika skor = 0?
+- Jelaskan perbedaannya dalam komentar kode
+
+### Latihan 6: Konversi Tipe Data
+
+**Tingkat**: Menengah
+
+**Tujuan**: Menguasai berbagai cara konversi tipe data
+
+**Instruksi**:
+Anda menerima input dari user dalam bentuk string:
+
+```javascript
+const inputUmur = '25';
+const inputNama = 'Budi';
+const inputStatus = 'true';
+const inputHarga = '15.99';
+```
+
+Konversi ke tipe data yang sesuai dan gunakan untuk:
+
+1. Hitung umur + 5 tahun
+2. Tampilkan nama dengan sapaan
+3. Konversi status ke boolean dan cek dengan conditional
+4. Hitung total harga untuk 3 item
+
+### Tantangan: Sistem Diskon Toko
+
+**Tingkat**: Lanjutan
+
+**Tujuan**: Menggabungkan semua operator yang dipelajari
+
+**Instruksi**:
+Buat sistem perhitungan diskon dengan aturan:
+
+- Member VIP: 20% diskon
+- Member Regular: 10% diskon
+- Non-member: 0% diskon
+- Bonus: Jika pembelian > Rp 500.000, tambahan diskon 5%
+- Tambahan: Jika hari ini adalah ulang tahun member, tambahan diskon 10%
+
+Input:
+
+```javascript
+const hargaBarang = 600000;
+const statusMember = 'VIP'; // 'VIP', 'REGULAR', atau 'NONE'
+const isUlangTahun = true;
+```
+
+Hitung:
+
+1. Total diskon dalam persen
+2. Jumlah diskon dalam rupiah
+3. Harga akhir yang harus dibayar
+
+Tampilkan dengan format rapi menggunakan template literal.
+
+**Contoh output:**
+
+```
+=== RINGKASAN BELANJA ===
+Harga Awal: Rp600,000
+Status Member: VIP
+Diskon Member: 20%
+Diskon Belanja Besar: 5%
+Diskon Ulang Tahun: 10%
+Total Diskon: 35%
+Potongan Harga: Rp210,000
+TOTAL BAYAR: Rp390,000
+```
+
+---
+
+## Solusi dan Pembahasan
+
+### Solusi Latihan 6: Konversi Tipe Data
+
+```javascript
+const inputUmur = '25';
+const inputNama = 'Budi';
+const inputStatus = 'true';
+const inputHarga = '15.99';
+
+// 1. Konversi umur dan hitung
+const umur = Number(inputUmur);
+const umurLimaTahunLagi = umur + 5;
+console.log(`Umur 5 tahun lagi: ${umurLimaTahunLagi}`); // 30
+
+// 2. Tampilkan nama dengan sapaan (tidak perlu konversi)
+console.log(`Halo, ${inputNama}!`); // "Halo, Budi!"
+
+// 3. Konversi status ke boolean
+const isActive = inputStatus === 'true'; // String 'true' jadi boolean true
+console.log(`Status aktif: ${isActive ? 'Ya' : 'Tidak'}`); // "Status aktif: Ya"
+
+// 4. Konversi harga dan hitung total untuk 3 item
+const harga = parseFloat(inputHarga);
+const totalHarga = harga * 3;
+console.log(`Total harga 3 item: Rp${totalHarga.toFixed(2)}`); // "Total harga 3 item: Rp47.97"
+```
 
 ---
 
 ## Rangkuman Sesi 2
 
-Di sesi ini, kita telah belajar bagaimana:
+Selamat! Anda telah menguasai berbagai operator di JavaScript:
 
-- Menggunakan **operator aritmatika** untuk kalkulasi matematis.
-- Menggunakan **operator perbandingan** dan **logika** untuk membuat keputusan.
-- Pentingnya menggunakan `===` untuk perbandingan yang aman.
-- Melakukan **konversi tipe data** dari string ke number.
-- Membuat string secara efisien dengan **String Template**.
+- **Operator Aritmatika** untuk kalkulasi matematis (+, -, \*, /, %, \*\*)
+- **Operator Perbandingan** untuk membandingkan nilai - selalu gunakan `===` untuk perbandingan yang aman
+- **Operator Logika** (&&, ||, !) dan short-circuit evaluation untuk logika kompleks
+- **Operator Ternary** sebagai shorthand untuk if-else sederhana
+- **Nullish Coalescing** (`??`) untuk default value yang lebih presisi
+- **Konversi Tipe Data** menggunakan Number(), parseInt(), parseFloat(), String(), Boolean()
+- **Template Literal** untuk membuat string yang lebih mudah dibaca
 
-Anda sekarang memiliki alat untuk mulai mengolah data. Di sesi berikutnya, kita akan menggunakan alat ini untuk mengontrol alur program!
+Di sesi berikutnya, kita akan belajar cara mengontrol alur program menggunakan conditional dan loop!
